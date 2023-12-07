@@ -218,10 +218,10 @@ fun RegisterScreen(
                         if (task.isSuccessful) {
                             val user = Firebase.auth.currentUser
                             user?.updateProfile(userProfileChangeRequest {
-                                    displayName = nameState.value
-                                })
-                            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT)
-                                .show()
+                                displayName = nameState.value
+                            })
+                            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+                            register()
                         } else {
                             Toast.makeText(
                                 context,
@@ -230,7 +230,6 @@ fun RegisterScreen(
                             ).show()
                         }
                     }
-                register()
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary

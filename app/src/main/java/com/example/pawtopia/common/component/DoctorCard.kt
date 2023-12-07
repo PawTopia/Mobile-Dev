@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,10 +30,10 @@ fun DoctorColumn(
     val columnState = rememberLazyListState()
     LazyColumn(
         state = columnState,
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(6) {
+        items(20) {
             DoctorCard()
         }
     }
@@ -41,7 +42,7 @@ fun DoctorColumn(
 
 @Composable
 fun DoctorCard() {
-    Card {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = painterResource(id = R.drawable.foto_dokter),

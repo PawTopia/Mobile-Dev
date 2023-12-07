@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,7 +53,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navigateToDoctor: () -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 0.dp)
@@ -79,19 +82,22 @@ fun HomeScreen() {
                             image = R.drawable.consultation,
                             title = "Consultansy With Doctor",
                             containerColor = MaterialTheme.colorScheme.primary,
-                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            onClick = { navigateToDoctor() }
                         )
                         FeatureButton(
                             image = R.drawable.suspect_disease,
                             title = "Suspect Disease",
                             containerColor = MaterialTheme.colorScheme.primary,
-                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            onClick = {}
                         )
                         FeatureButton(
                             image = R.drawable.recommended_clinic,
                             title = "Recommendation Pet Clinic",
                             containerColor = MaterialTheme.colorScheme.primary,
-                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            onClick = {}
                         )
                     }
                 }
@@ -161,10 +167,11 @@ fun FeatureButton(
     title: String,
     containerColor: Color,
     imageColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = containerColor
         )
@@ -235,7 +242,7 @@ fun ClinicItem(
 @Composable
 @Preview(showBackground = true)
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen({})
 }
 
 @Composable

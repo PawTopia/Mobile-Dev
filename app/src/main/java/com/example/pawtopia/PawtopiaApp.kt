@@ -31,7 +31,10 @@ import com.example.pawtopia.screen.LoginScreen
 import com.example.pawtopia.screen.ProfileScreen
 import com.example.pawtopia.screen.RegisterScreen
 import com.example.pawtopia.screen.WelcomeScreen
+import com.example.pawtopia.screen.doctor.DoctorScreen
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun PawtopiaApp(
@@ -41,6 +44,7 @@ fun PawtopiaApp(
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val user = Firebase.auth.currentUser
 
     Scaffold(
         topBar = {
@@ -58,7 +62,7 @@ fun PawtopiaApp(
         val context = LocalContext.current
         NavHost(
             navController = navController,
-            startDestination = Screen.Welcome.route,
+            startDestination = if (user != null) Screen.Home.route else Screen.Welcome.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.Welcome.route) {
@@ -96,16 +100,26 @@ fun PawtopiaApp(
                 )
             }
             composable(Screen.Home.route) {
-                HomeScreen()
+                HomeScreen(
+                    navigateToDoctor = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Favorite.route)
+                    }
+                )
             }
             composable(Screen.Chat.route) {
                 ChatScreen()
             }
             composable(Screen.Favorite.route) {
-                FavoriteScreen()
+                DoctorScreen()
             }
             composable(Screen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(
+                    navigateToLogin = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Login.route)
+                    }
+                )
             }
         }
     }

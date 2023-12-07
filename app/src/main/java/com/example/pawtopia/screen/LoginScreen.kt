@@ -154,11 +154,12 @@ fun LoginScreen(
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(context, "Authentication Success.", Toast.LENGTH_SHORT).show()
+                            login()
                         } else {
                             Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
                         }
                     }
-                login() },
+                },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             ),
