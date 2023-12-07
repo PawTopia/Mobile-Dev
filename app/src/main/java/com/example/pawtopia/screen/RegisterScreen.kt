@@ -50,6 +50,9 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun RegisterScreen(
@@ -63,7 +66,7 @@ fun RegisterScreen(
     var passwordState by remember { mutableStateOf(InputTextState()) }
     var confirmPasswordState by remember { mutableStateOf(InputTextState()) }
 
-    var auth = FirebaseAuth.getInstance()
+    val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
 
     Column(
@@ -213,12 +216,22 @@ fun RegisterScreen(
                 auth.createUserWithEmailAndPassword(emailState.value, passwordState.value)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+                            val user = Firebase.auth.currentUser
+                            user?.updateProfile(userProfileChangeRequest {
+                                    displayName = nameState.value
+                                })
+                            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
-                            Toast.makeText(context, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Registration failed: ${task.exception?.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-                register() },
+                register()
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             ),

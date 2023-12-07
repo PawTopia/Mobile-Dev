@@ -1,7 +1,6 @@
 package com.example.pawtopia
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -42,7 +41,6 @@ fun PawtopiaApp(
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    var auth = FirebaseAuth.getInstance()
 
     Scaffold(
         topBar = {

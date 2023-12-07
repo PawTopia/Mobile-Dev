@@ -48,6 +48,8 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.fillWidthOfParent
 import com.example.pawtopia.data.model.Clinic
 import com.example.pawtopia.data.model.clinicList
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun HomeScreen() {
@@ -57,8 +59,9 @@ fun HomeScreen() {
             .fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
+        val user = Firebase.auth.currentUser
         Column {
-            ProfileCard()
+            ProfileCard(name = user?.displayName)
             Spacer(modifier = Modifier.height(12.dp))
             Divider(
                 modifier = Modifier.fillWidthOfParent(24.dp),
@@ -74,19 +77,19 @@ fun HomeScreen() {
                         Text(text = "Services", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                         FeatureButton(
                             image = R.drawable.consultation,
-                            title = "Consultansy With Doctor1",
+                            title = "Consultansy With Doctor",
                             containerColor = MaterialTheme.colorScheme.primary,
                             imageColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         FeatureButton(
-                            image = R.drawable.consultation,
-                            title = "Consultansy With Doctor2",
+                            image = R.drawable.suspect_disease,
+                            title = "Suspect Disease",
                             containerColor = MaterialTheme.colorScheme.primary,
                             imageColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         FeatureButton(
-                            image = R.drawable.consultation,
-                            title = "Consultansy With Doctor3",
+                            image = R.drawable.recommended_clinic,
+                            title = "Recommendation Pet Clinic",
                             containerColor = MaterialTheme.colorScheme.primary,
                             imageColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -106,7 +109,10 @@ fun HomeScreen() {
 }
 
 @Composable
-fun ProfileCard(modifier: Modifier = Modifier) {
+fun ProfileCard(
+    modifier: Modifier = Modifier,
+    name: String? = "Ini Placeholder",
+    ) {
     ElevatedCard {
         Row(
             modifier = modifier
@@ -129,7 +135,7 @@ fun ProfileCard(modifier: Modifier = Modifier) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Text(text = "Hi, Doe Doe!")
+                Text(text = "Hi, $name!")
                 Text(
                     text = "Medan Kota, Medan",
                     color = Color.LightGray,
