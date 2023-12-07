@@ -49,7 +49,7 @@ fun PawtopiaApp(
 //                 }
         },
         bottomBar = {
-            if (currentRoute != Screen.Welcome.route) {
+            if (currentRoute !in arrayOf(Screen.Welcome.route, Screen.Login.route, Screen.Register.route)) {
                 BottomBar(navController = navController)
             }
         }
@@ -143,6 +143,7 @@ private fun BottomBar(
         navigationItem.map { item ->
             NavigationBarItem(
                 label = { Text(text = item.title) },
+                alwaysShowLabel = false,
                 selected = currentRoute == item.screen.route,
                 onClick = {
                     navController.navigate(item.screen.route) {
