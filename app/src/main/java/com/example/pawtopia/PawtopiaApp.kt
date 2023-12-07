@@ -32,14 +32,17 @@ import com.example.pawtopia.screen.LoginScreen
 import com.example.pawtopia.screen.ProfileScreen
 import com.example.pawtopia.screen.RegisterScreen
 import com.example.pawtopia.screen.WelcomeScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun PawtopiaApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    var auth = FirebaseAuth.getInstance()
 
     Scaffold(
         topBar = {
@@ -88,6 +91,7 @@ fun PawtopiaApp(
                     navController.navigate(Screen.Login.route)
                 },
                     register = {
+
                         navController.popBackStack()
                         navController.navigate(Screen.Home.route)
                     }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "538821614896",
+    "project_id": "pawtopia-405619",
+    "storage_bucket": "pawtopia-405619.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538821614896:android:67a5576d6775554cfe7cf5",
+        "android_client_info": {
+          "package_name": "com.example.pawtopia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzOcn9owT65tv_E5E319Jlne_U3B_1Bx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
