@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pawtopia.R
-import com.example.pawtopia.common.fillWidthOfParent
+import com.example.pawtopia.common.util.fillWidthOfParent
 import com.example.pawtopia.data.model.Clinic
 import com.example.pawtopia.data.model.clinicList
 import com.google.firebase.auth.ktx.auth
@@ -54,7 +54,10 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun HomeScreen(
-    navigateToDoctor: () -> Unit
+    navigateToDoctor: () -> Unit,
+    navigateToFindClinic: () -> Unit,
+    navigateToSuspect: () -> Unit,
+    navigateToDetailClinic: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -80,24 +83,24 @@ fun HomeScreen(
                         Text(text = "Services", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                         FeatureButton(
                             image = R.drawable.consultation,
-                            title = "Consultansy With Doctor",
+                            title = "Konsultasi dengan Dokter",
                             containerColor = MaterialTheme.colorScheme.primary,
                             imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            onClick = { navigateToDoctor() }
+                            onClick = navigateToDoctor
                         )
                         FeatureButton(
                             image = R.drawable.suspect_disease,
-                            title = "Suspect Disease",
+                            title = "Suspect Penyakit",
                             containerColor = MaterialTheme.colorScheme.primary,
                             imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            onClick = {}
+                            onClick = navigateToSuspect
                         )
                         FeatureButton(
                             image = R.drawable.recommended_clinic,
-                            title = "Recommendation Pet Clinic",
+                            title = "Rekomendasi Klinik Hewan",
                             containerColor = MaterialTheme.colorScheme.primary,
                             imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            onClick = {}
+                            onClick = navigateToFindClinic
                         )
                     }
                 }
@@ -105,7 +108,7 @@ fun HomeScreen(
                 Card {
                     Column(modifier = Modifier.padding(12.dp, 8.dp, 12.dp, 0.dp)) {
                         Text(text = "Pet Care Nearby You", fontWeight = FontWeight.Bold)
-                        ClinicsRow(clinicList = clinicList)
+                        ClinicsRow(clinicList = clinicList, onClick = navigateToDetailClinic)
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -196,6 +199,7 @@ fun FeatureButton(
 @Composable
 fun ClinicsRow(
     clinicList: List<Clinic>,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val rowState = rememberLazyListState()
@@ -205,19 +209,20 @@ fun ClinicsRow(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(clinicList) { clinic ->
-            ClinicItem(clinic.name, clinic.photoUrl)
+            ClinicHomeItem(clinic.name, clinic.photoUrl, onClick)
         }
     }
 }
 
 @Composable
-fun ClinicItem(
+fun ClinicHomeItem(
     name: String,
     photoUrl: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         shape = RoundedCornerShape(topStartPercent = 15, topEndPercent = 15),
         border = BorderStroke(width = 1.dp, color = Color.Gray)
     ) {
@@ -230,23 +235,10 @@ fun ClinicItem(
                 contentScale = ContentScale.FillBounds
             )
             Text(
-                text = "Nama Klinik",
+                text = name,
                 modifier = Modifier.padding(start = 4.dp),
                 fontWeight = FontWeight.Medium
             )
         }
     }
-}
-
-
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    HomeScreen({})
-}
-
-@Composable
-@Preview(showBackground = false)
-fun ProfileCardPreview() {
-    ClinicsRow(clinicList = clinicList)
 }

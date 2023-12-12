@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen
+package com.example.pawtopia.screen.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -20,12 +20,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.rounded.Email
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,27 +47,25 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pawtopia.R
-import com.example.pawtopia.common.isValidEmail
+import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.userProfileChangeRequest
-import com.google.firebase.ktx.Firebase
 
 @Composable
-fun RegisterScreen(
-    navigateToLogin: () -> Unit,
-    register: () -> Unit
+fun LoginScreen(
+    navigateToRegister: () -> Unit,
+    login: () -> Unit,
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
-    var confirmPasswordVisibility by remember { mutableStateOf(false) }
-    var nameState by remember { mutableStateOf(InputTextState()) }
-    var emailState by remember { mutableStateOf(InputTextState()) }
-    var passwordState by remember { mutableStateOf(InputTextState()) }
-    var confirmPasswordState by remember { mutableStateOf(InputTextState()) }
-
+    var emailState by remember {
+        mutableStateOf(InputTextState())
+    }
+    var passwordState by remember {
+        mutableStateOf(InputTextState())
+    }
     val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,41 +80,9 @@ fun RegisterScreen(
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Daftar",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.align(Alignment.Start)
+            text = "Masuk", fontSize = 24.sp,
+            fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start)
         )
-        InputText(
-            value = nameState.value,
-            onChange = { newValue ->
-                nameState = nameState.copy(
-                    value = newValue,
-                    isError = newValue.isEmpty()
-                )
-            },
-            label = "Name",
-            isError = nameState.isError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Person, contentDescription = "Nama")
-            },
-            trailingIcon = {
-                if (nameState.value.isNotEmpty()) {
-                    IconButton(onClick = { nameState = nameState.copy(value = "") }) {
-                        Icon(imageVector = Icons.Outlined.Clear, contentDescription = "Hapus")
-                    }
-                }
-            },
-            supportingText = {
-                if (emailState.isError) {
-                    Text(text = "Cannot be empty")
-                }
-            },
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
         InputText(
             value = emailState.value,
             onChange = { newValue ->
@@ -134,7 +100,7 @@ fun RegisterScreen(
             trailingIcon = {
                 if (emailState.value.isNotEmpty()) {
                     IconButton(onClick = { emailState = emailState.copy(value = "") }) {
-                        Icon(imageVector = Icons.Outlined.Clear, contentDescription = "Hapus")
+                        Icon(imageVector = Icons.Outlined.Clear, contentDescription = "Clear")
                     }
                 }
             },
@@ -143,6 +109,7 @@ fun RegisterScreen(
                     Text(text = "Email not valid")
                 }
             },
+            modifier = Modifier.padding(top = 8.dp)
         )
 
         InputText(
@@ -178,59 +145,27 @@ fun RegisterScreen(
             },
         )
 
-        InputText(
-            value = confirmPasswordState.value,
-            onChange = { newValue ->
-                confirmPasswordState = confirmPasswordState.copy(
-                    value = newValue,
-                    isError = passwordState.value != newValue
-                )
-            },
-            label = "Confirm Password",
-            isError = confirmPasswordState.isError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Lock, contentDescription = "Password")
-            },
-            trailingIcon = {
-                val icon =
-                    if (confirmPasswordVisibility) ImageVector.vectorResource(R.drawable.ic_visibility_off) else ImageVector.vectorResource(
-                        R.drawable.ic_visibility
-                    )
-                val desc = if (confirmPasswordVisibility) "Hide password" else "Show password"
-
-                IconButton(onClick = { confirmPasswordVisibility = !confirmPasswordVisibility }) {
-                    Icon(imageVector = icon, contentDescription = desc)
-                }
-            },
-            supportingText = {
-                if (confirmPasswordState.isError) {
-                    Text(text = "Password tidak sama")
-                }
-            },
-        )
-
         Button(
             onClick = {
-                auth.createUserWithEmailAndPassword(emailState.value, passwordState.value)
+                if (emailState.value.isEmpty()) {
+                    emailState = emailState.copy(isError = true)
+                    return@Button
+                }
+                if (passwordState.value.isEmpty()) {
+                    passwordState = passwordState.copy(isError = true)
+                    return@Button
+                }
+
+                auth.signInWithEmailAndPassword(emailState.value, passwordState.value)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val user = Firebase.auth.currentUser
-                            user?.updateProfile(userProfileChangeRequest {
-                                displayName = nameState.value
-                            })
-                            Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
-                            register()
+                            Toast.makeText(context, "Authentication Success.", Toast.LENGTH_SHORT).show()
+                            login()
                         } else {
-                            Toast.makeText(
-                                context,
-                                "Registration failed: ${task.exception?.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
                         }
                     }
-            },
+                },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             ),
@@ -241,29 +176,64 @@ fun RegisterScreen(
                 .padding(top = 32.dp)
         ) {
             Text(
-                text = "Sign Up",
+                text = "Log In",
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
         Row(
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.spacedBy(
+                4.dp,
+                alignment = Alignment.CenterHorizontally
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp)
         ) {
             Text(
-                text = "Sudah memiliki akun? ",
+                text = "Belum punya akun? ",
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "Masuk disini",
-                modifier = Modifier.clickable { navigateToLogin() },
+                text = "Daftar Disini",
+                modifier = Modifier.clickable { navigateToRegister() },
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(textDecoration = TextDecoration.Underline),
             )
         }
     }
+}
+
+@Composable
+fun InputText(
+    value: String,
+    onChange: (String) -> Unit,
+    label: String,
+    isError: Boolean,
+    modifier: Modifier = Modifier,
+    singleLine: Boolean = true,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    leadingIcon: @Composable () -> Unit = {},
+    trailingIcon: @Composable () -> Unit = {},
+    supportingText: @Composable () -> Unit = {}
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onChange,
+        singleLine = singleLine,
+        shape = RoundedCornerShape(16.dp),
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        isError = isError,
+        label = {
+            Text(text = label)
+        },
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        supportingText = supportingText,
+        modifier = modifier
+            .fillMaxWidth()
+    )
 }

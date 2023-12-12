@@ -1,10 +1,11 @@
-package com.example.pawtopia.common
+package com.example.pawtopia.common.util
 
 import android.text.TextUtils
 import android.util.Patterns
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
+import com.example.pawtopia.common.state.InputTextState
 
 // Validating Email
 fun String.isValidEmail(): Boolean =
@@ -24,3 +25,6 @@ fun Modifier.fillWidthOfParent(parentPadding: Dp) = this.then(
         }
     },
 )
+
+fun InputTextState.validate(): Boolean =
+    this.value.isEmpty() || this.isError

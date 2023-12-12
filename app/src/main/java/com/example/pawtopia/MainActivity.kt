@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavController
 import com.example.pawtopia.ui.theme.PawtopiaTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,4 +28,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.pawtopia.util
+package com.example.pawtopia.data.model
 
 import androidx.annotation.DrawableRes
 import com.example.pawtopia.R

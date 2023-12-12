@@ -24,15 +24,18 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pawtopia.navigation.NavigationItem
 import com.example.pawtopia.navigation.Screen
-import com.example.pawtopia.screen.ChatScreen
-import com.example.pawtopia.screen.FavoriteScreen
 import com.example.pawtopia.screen.HomeScreen
-import com.example.pawtopia.screen.LoginScreen
-import com.example.pawtopia.screen.ProfileScreen
-import com.example.pawtopia.screen.RegisterScreen
+import com.example.pawtopia.screen.SavedScreen
 import com.example.pawtopia.screen.WelcomeScreen
+import com.example.pawtopia.screen.chat.ChatListScreen
+import com.example.pawtopia.screen.chat.ChatScreen
+import com.example.pawtopia.screen.clinic.DetailClinicScreen
+import com.example.pawtopia.screen.clinic.FindClinicScreen
+import com.example.pawtopia.screen.doctor.DoctorDetailScreen
 import com.example.pawtopia.screen.doctor.DoctorScreen
-import com.google.firebase.auth.FirebaseAuth
+import com.example.pawtopia.screen.login.LoginScreen
+import com.example.pawtopia.screen.profile.ProfileScreen
+import com.example.pawtopia.screen.register.RegisterScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -47,19 +50,20 @@ fun PawtopiaApp(
     val user = Firebase.auth.currentUser
 
     Scaffold(
-        topBar = {
-//                 when(currentRoute) {
-//                     Screen.Home.route ->
-//                     Screen.Home.route ->
-//                 }
-        },
         bottomBar = {
-            if (currentRoute !in arrayOf(Screen.Welcome.route, Screen.Login.route, Screen.Register.route)) {
+            if (currentRoute !in arrayOf(
+                    Screen.Welcome.route,
+                    Screen.Login.route,
+                    Screen.Register.route,
+                    Screen.Chat.route
+                )
+            ) {
                 BottomBar(navController = navController)
             }
         }
     ) { innerPadding ->
         val context = LocalContext.current
+
         NavHost(
             navController = navController,
             startDestination = if (user != null) Screen.Home.route else Screen.Welcome.route,
@@ -93,7 +97,6 @@ fun PawtopiaApp(
                     navController.navigate(Screen.Login.route)
                 },
                     register = {
-
                         navController.popBackStack()
                         navController.navigate(Screen.Home.route)
                     }
@@ -103,21 +106,86 @@ fun PawtopiaApp(
                 HomeScreen(
                     navigateToDoctor = {
                         navController.popBackStack()
-                        navController.navigate(Screen.Favorite.route)
+                        navController.navigate(Screen.Saved.route)
+                    },
+                    navigateToDetailClinic = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.FindClinic.route)
+                    },
+                    navigateToFindClinic = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.FindClinic.route)
+                    },
+                    navigateToSuspect = {
+
                     }
                 )
             }
-            composable(Screen.Chat.route) {
-                ChatScreen()
+            composable(Screen.ChatList.route) {
+                ChatListScreen(
+                    navigateToChat = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Chat.route)
+                    },
+                    navigateUp = { navController.navigateUp() }
+                )
             }
-            composable(Screen.Favorite.route) {
-                DoctorScreen()
+            composable(Screen.Chat.route) {
+                ChatScreen(navigateUp = {
+                    navController.navigateUp()
+                })
+            }
+            composable(Screen.Saved.route) {
+                SavedScreen(
+                    navigateToDetailClinic = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.DetailClinic.route)
+                    },
+                    navigateUp = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(Screen.FindClinic.route) {
+                FindClinicScreen(navigateToDetailClinic = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.DetailClinic.route)
+                },
+                    navigateUp = {
+                        navController.navigateUp()
+                    })
+            }
+            composable(Screen.DetailClinic.route) {
+                DetailClinicScreen(navigateUp = {
+                    navController.navigateUp()
+                })
+            }
+            composable(Screen.Doctor.route) {
+                DoctorScreen(
+                   navigateToDetailDoctor =  {
+                        navController.popBackStack()
+                        navController.navigate(Screen.DoctorProfile.route)
+                    },
+                    navigateUp = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(Screen.DoctorProfile.route) {
+                DoctorDetailScreen(
+                    navigateUp = {
+                        navController.navigateUp()
+                    }
+                )
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     navigateToLogin = {
                         navController.popBackStack()
                         navController.navigate(Screen.Login.route)
+                    },
+                    navigateUp = {
+                        navController.navigateUp()
                     }
                 )
             }
@@ -142,12 +210,12 @@ private fun BottomBar(
             NavigationItem(
                 title = "Chat",
                 icon = ImageVector.vectorResource(R.drawable.ic_chat),
-                screen = Screen.Chat
+                screen = Screen.ChatList
             ),
             NavigationItem(
                 title = "Favorite",
                 icon = ImageVector.vectorResource(R.drawable.ic_favorite),
-                screen = Screen.Favorite
+                screen = Screen.Saved
             ),
             NavigationItem(
                 title = "Profile",
@@ -176,3 +244,4 @@ private fun BottomBar(
         }
     }
 }
+
