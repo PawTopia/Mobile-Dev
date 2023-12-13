@@ -23,18 +23,14 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TopBar(
     title: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+            .fillMaxWidth().padding(vertical = 20.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OutlinedBackButton {
-            onClick()
-        }
         Text(text = title, fontSize = 24.sp, fontWeight = FontWeight.Bold)
     }
 }

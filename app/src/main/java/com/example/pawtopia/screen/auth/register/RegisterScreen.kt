@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.register
+package com.example.pawtopia.screen.auth.register
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -50,7 +50,7 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
 import com.example.pawtopia.common.util.validate
-import com.example.pawtopia.screen.login.InputText
+import com.example.pawtopia.screen.auth.login.InputText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
@@ -274,7 +274,6 @@ fun RegisterScreen(
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier

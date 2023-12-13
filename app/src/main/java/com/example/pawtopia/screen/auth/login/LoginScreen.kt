@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.login
+package com.example.pawtopia.screen.auth.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image

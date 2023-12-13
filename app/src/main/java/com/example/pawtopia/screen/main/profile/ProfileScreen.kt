@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.profile
+package com.example.pawtopia.screen.main.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.pawtopia.R
 import com.example.pawtopia.common.component.TopBar
@@ -30,14 +29,16 @@ import com.google.firebase.auth.FirebaseAuth
 fun ProfileScreen(
     navigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
             .fillMaxSize()
-            .padding(20.dp)) {
-        TopBar(title = "Profile", onClick = navigateUp, modifier = Modifier.padding(bottom = 12.dp))
+            .padding(20.dp)
+    ) {
+        TopBar(
+            title = "Akun Profil", modifier = Modifier.padding(bottom = 20.dp)
+        )
         Image(
             painter = painterResource(id = R.drawable.foto_dokter),
             contentDescription = "profil foto",

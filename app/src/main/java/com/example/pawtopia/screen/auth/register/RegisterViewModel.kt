@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.register
+package com.example.pawtopia.screen.auth.register
 
 import androidx.lifecycle.ViewModel
 import com.example.pawtopia.common.state.UiState

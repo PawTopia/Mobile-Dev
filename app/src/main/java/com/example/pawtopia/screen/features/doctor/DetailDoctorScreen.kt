@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.doctor
+package com.example.pawtopia.screen.features.doctor
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,14 +31,12 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.component.TopBar
 
 @Composable
-fun DoctorDetailScreen(
-    navigateUp: () -> Unit,
+fun DetailDoctorScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
-        TopBar(title = "Doctor Profile", onClick = navigateUp, modifier = Modifier.fillMaxWidth())
         DoctorProfileCard()
         Button(onClick = { /*TODO*/ }) {
             Text(text = "Contact them")

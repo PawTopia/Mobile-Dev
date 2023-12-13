@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.doctor
+package com.example.pawtopia.screen.features.doctor
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,22 +22,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pawtopia.R
-import com.example.pawtopia.common.component.TopBar
 
 @Composable
-fun DoctorScreen(
+fun FindDoctorScreen(
     navigateToDetailDoctor: () -> Unit,
-    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 0.dp)
+        modifier = modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)
     ) {
-        TopBar(
-            title = "Choose What The Best For You",
-            onClick = navigateUp,
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
         DoctorColumn(navigateToDetailDoctor = navigateToDetailDoctor)
     }
 }

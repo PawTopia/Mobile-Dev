@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen
+package com.example.pawtopia.screen.main.favorites
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,8 +17,8 @@ import com.example.pawtopia.data.model.clinicList
 @Composable
 fun SavedScreen(
     navigateToDetailClinic: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -26,7 +26,6 @@ fun SavedScreen(
         Column {
             TopBar(
                 title = "Klinik Favorit",
-                onClick = navigateUp,
                 modifier = Modifier.padding(20.dp, 20.dp, 12.dp, 12.dp)
             )
             LazyColumn(

@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.chat
+package com.example.pawtopia.screen.main.chatlist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -26,7 +25,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import com.example.pawtopia.R
@@ -35,13 +33,22 @@ import com.example.pawtopia.common.component.TopBar
 @Composable
 fun ChatListScreen(
     navigateToChat: () -> Unit,
-    navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.padding(20.dp,20.dp,20.dp,0.dp)) {
-        TopBar(title = "Doctor Consultation", onClick = navigateUp, modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp))
-        Button(onClick = { navigateToChat() }, modifier = Modifier
-            .align(Alignment.End), contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp), shape = MaterialTheme.shapes.medium) {
+    Column(modifier = modifier.padding(20.dp, 20.dp, 20.dp, 0.dp)) {
+
+        TopBar(
+            title = "Doctor Consultation",
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+        )
+        Button(
+            onClick = { navigateToChat() },
+            modifier = Modifier
+                .align(Alignment.End),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+            shape = MaterialTheme.shapes.medium
+        ) {
             Text(text = "New Chat")
             Spacer(modifier = Modifier.width(4.dp))
             Icon(imageVector = Icons.Default.Add, contentDescription = "New Chat Button")
@@ -51,7 +58,11 @@ fun ChatListScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(15) {
-                ChatListCard(titleMessage = "Doctor Consultation", lastMessage = LoremIpsum().values.first().take(90), onClick = navigateToChat )
+                ChatListCard(
+                    titleMessage = "Doctor Consultation",
+                    lastMessage = LoremIpsum().values.first().take(90),
+                    onClick = navigateToChat
+                )
             }
         }
     }

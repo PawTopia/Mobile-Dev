@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.clinic
+package com.example.pawtopia.screen.features.clinic
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -39,11 +39,6 @@ fun DetailClinicScreen(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        TopBar(
-            title = "Detail Klinik",
-            onClick = navigateUp,
-            modifier = Modifier.padding(20.dp, 12.dp, 20.dp, 20.dp)
-        )
         Image(
             painter = painterResource(id = R.drawable.klinik_hewan),
             contentDescription = "Gambar Klinik",

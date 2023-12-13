@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.clinic
+package com.example.pawtopia.screen.features.clinic
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

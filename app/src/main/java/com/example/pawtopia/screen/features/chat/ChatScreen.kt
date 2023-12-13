@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.chat
+package com.example.pawtopia.screen.features.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -54,13 +54,6 @@ fun ChatScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            TopBar(
-                title = "Doctor Consultation",
-                onClick = navigateUp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            )
             Box(
                 modifier = Modifier
                     .fillMaxSize()

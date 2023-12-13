@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WelcomeScreen(
-    navigateToHome: () -> Unit,
+    navigateToAuth: () -> Unit,
     onNavUp: () -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = {
@@ -116,7 +116,7 @@ fun WelcomeScreen(
                     pagerState.scrollToPage(pagerState.currentPage + 1)
                 }
             } else {
-                navigateToHome()
+                navigateToAuth()
             }
         }
     }
