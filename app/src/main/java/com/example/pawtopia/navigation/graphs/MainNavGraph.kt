@@ -8,12 +8,13 @@ import com.example.pawtopia.navigation.BottomBarScreen
 import com.example.pawtopia.navigation.FeaturesScreen
 import com.example.pawtopia.screen.main.home.HomeScreen
 import com.example.pawtopia.screen.main.favorites.SavedScreen
-import com.example.pawtopia.screen.main.chatlist.ChatListScreen
+import com.example.pawtopia.screen.main.historychat.HistoryChatScreen
 import com.example.pawtopia.screen.main.profile.ProfileScreen
 
 @Composable
 fun MainNavGraph(
     navigateToAuth: () -> Unit,
+    onFeaturesTitleChanged: (String) -> Unit,
     navController: NavHostController,
 ) {
     NavHost(
@@ -36,7 +37,7 @@ fun MainNavGraph(
             )
         }
         composable(route = BottomBarScreen.Chat.route) {
-            ChatListScreen(navigateToChat = {
+            HistoryChatScreen(navigateToChat = {
                 navController.navigate(FeaturesScreen.Conversation.route)
             })
         }
@@ -51,6 +52,8 @@ fun MainNavGraph(
             )
         }
 
-        featuresNavGraph(navController = navController)
+        featuresNavGraph(
+            onFeaturesTitleChanged = onFeaturesTitleChanged,
+            navController = navController)
     }
 }

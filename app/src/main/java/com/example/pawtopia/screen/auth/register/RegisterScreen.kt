@@ -46,6 +46,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.R
 import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
@@ -55,11 +56,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun RegisterScreen(
+    viewModel: RegisterViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
-    register: () -> Unit
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
     var confirmPasswordVisibility by remember { mutableStateOf(false) }
@@ -68,7 +70,6 @@ fun RegisterScreen(
     var passwordState by remember { mutableStateOf(InputTextState()) }
     var confirmPasswordState by remember { mutableStateOf(InputTextState()) }
 
-    val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
 
     Column(
@@ -233,27 +234,47 @@ fun RegisterScreen(
                     }
 
                     else -> {
-                        auth.createUserWithEmailAndPassword(emailState.value, passwordState.value)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    val user = Firebase.auth.currentUser
-                                    user?.updateProfile(userProfileChangeRequest {
-                                        displayName = nameState.value
-                                    })
-                                    Toast.makeText(
+                        viewModel.register(
+                            name = nameState.value,
+                            email = emailState.value,
+                            password = passwordState.value,
+                            success = {
+                                Toast.makeText(
                                         context,
                                         "Registration successful",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    register()
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Registration failed: ${task.exception?.message}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                                      navigateToLogin()
+                            },
+                            failed = {
+                                Toast.makeText(
+                                    context,
+                                    "Registration failed : ${it.exception?.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
+                        )
+//                        auth.createUserWithEmailAndPassword(emailState.value, passwordState.value)
+//                            .addOnCompleteListener { task ->
+//                                if (task.isSuccessful) {
+//                                    val user = Firebase.auth.currentUser
+//                                    user?.updateProfile(userProfileChangeRequest {
+//                                        displayName = nameState.value
+//                                    })
+//                                    Toast.makeText(
+//                                        context,
+//                                        "Registration successful",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                    register()
+//                                } else {
+//                                    Toast.makeText(
+//                                        context,
+//                                        "Registration failed: ${task.exception?.message}",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                }
+//                            }
                     }
                 }
 

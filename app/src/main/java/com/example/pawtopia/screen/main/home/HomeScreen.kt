@@ -48,6 +48,12 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.util.fillWidthOfParent
 import com.example.pawtopia.data.model.Clinic
 import com.example.pawtopia.data.model.clinicList
+import com.example.pawtopia.ui.theme.consultColor
+import com.example.pawtopia.ui.theme.diagnoseColor
+import com.example.pawtopia.ui.theme.onConsultColor
+import com.example.pawtopia.ui.theme.onDiagnoseColor
+import com.example.pawtopia.ui.theme.onRecommendColor
+import com.example.pawtopia.ui.theme.recommendColor
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -60,12 +66,21 @@ fun HomeScreen(
 ) {
     Box(
         modifier = Modifier
-            .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 0.dp)
             .fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.background_transparent),
+            contentDescription = "Background",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.matchParentSize()
+        )
+
         val user = Firebase.auth.currentUser
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 0.dp)
+        ) {
             ProfileCard(name = user?.displayName)
             Spacer(modifier = Modifier.height(12.dp))
             Divider(
@@ -74,31 +89,31 @@ fun HomeScreen(
             )
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Card {
+                Card() {
                     Column(
                         modifier = Modifier.padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(text = "Services", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                         FeatureButton(
-                            image = R.drawable.consultation,
+                            image = R.drawable.consultancy,
                             title = "Konsultasi dengan Dokter",
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            containerColor = consultColor,
+                            imageColor = onConsultColor,
                             onClick = navigateToDoctor
                         )
                         FeatureButton(
-                            image = R.drawable.suspect_disease,
+                            image = R.drawable.diagnose_and_treatment,
                             title = "Suspect Penyakit",
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            containerColor = diagnoseColor,
+                            imageColor = onDiagnoseColor,
                             onClick = navigateToSuspect
                         )
                         FeatureButton(
-                            image = R.drawable.recommended_clinic,
+                            image = R.drawable.recommendation_clinic,
                             title = "Rekomendasi Klinik Hewan",
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            imageColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            containerColor = recommendColor,
+                            imageColor = onRecommendColor,
                             onClick = navigateToFindClinic
                         )
                     }
@@ -120,8 +135,12 @@ fun HomeScreen(
 fun ProfileCard(
     modifier: Modifier = Modifier,
     name: String? = "Ini Placeholder",
+) {
+    ElevatedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
     ) {
-    ElevatedCard {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -146,7 +165,7 @@ fun ProfileCard(
                 Text(text = "Hi, $name!")
                 Text(
                     text = "Medan Kota, Medan",
-                    color = Color.LightGray,
+                    color = Color.Gray,
                     fontWeight = FontWeight.Medium,
                     fontSize = 12.sp
                 )

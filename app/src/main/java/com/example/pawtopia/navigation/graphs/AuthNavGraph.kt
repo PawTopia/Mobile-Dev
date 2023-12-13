@@ -18,7 +18,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                     navController.popBackStack()
                     navController.navigate(AuthScreen.SignUp.route)
                 },
-                login = {
+                navigateToHome = {
                     navController.popBackStack()
                     navController.navigate(Graph.MAIN)
                 }
@@ -30,10 +30,6 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                     navController.popBackStack()
                     navController.navigate(AuthScreen.Login.route)
                 },
-                register = {
-                    navController.popBackStack()
-                    navController.navigate(AuthScreen.Login.route)
-                }
             )
         }
     }

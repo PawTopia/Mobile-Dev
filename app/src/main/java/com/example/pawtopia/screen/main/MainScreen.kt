@@ -13,12 +13,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,7 +40,7 @@ fun MainScreen(
     navController: NavHostController = rememberNavController()
 ) {
     var title by rememberSaveable {
-        mutableStateOf("Choose What Best For You")
+        mutableStateOf("")
     }
 
     val bottomBarItem = listOf(
@@ -79,7 +81,12 @@ fun MainScreen(
         }
     ) { innerPadding ->
         Box(modifier = modifier.padding(innerPadding)) {
-            MainNavGraph(navigateToAuth = navigateToAuth, navController = navController)
+            MainNavGraph(
+                onFeaturesTitleChanged = {
+                    title = it
+                },
+                navigateToAuth = navigateToAuth, navController = navController
+            )
         }
     }
 }
@@ -114,7 +121,10 @@ fun TopAppBar(
                         contentDescription = "Back Button"
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.Transparent
+            )
         )
     }
 

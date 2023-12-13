@@ -12,6 +12,7 @@ import com.example.pawtopia.screen.features.doctor.DetailDoctorScreen
 import com.example.pawtopia.screen.features.doctor.FindDoctorScreen
 
 fun NavGraphBuilder.featuresNavGraph(
+    onFeaturesTitleChanged: (String) -> Unit,
     navController: NavHostController,
 ) {
     navigation(
@@ -46,7 +47,8 @@ fun NavGraphBuilder.featuresNavGraph(
             DetailClinicScreen(navigateUp = { navController.navigateUp() })
         }
         composable(route = FeaturesScreen.Conversation.route) {
-            ChatScreen(navigateUp = { navController.navigateUp() })
+            ChatScreen()
+            onFeaturesTitleChanged("Doctor Simatupang")
         }
     }
 }

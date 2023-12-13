@@ -46,6 +46,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.R
 import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
@@ -54,7 +55,8 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun LoginScreen(
     navigateToRegister: () -> Unit,
-    login: () -> Unit,
+    navigateToHome: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
     var emailState by remember {
@@ -156,15 +158,17 @@ fun LoginScreen(
                     return@Button
                 }
 
-                auth.signInWithEmailAndPassword(emailState.value, passwordState.value)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(context, "Authentication Success.", Toast.LENGTH_SHORT).show()
-                            login()
-                        } else {
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                        }
+                viewModel.login(
+                    email = emailState.value,
+                    password = passwordState.value,
+                    success = {
+                        Toast.makeText(context, "Authentication Success.", Toast.LENGTH_SHORT).show()
+                        navigateToHome()
+                    },
+                    failed = {
+                        Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }
+                )
                 },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary

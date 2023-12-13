@@ -40,7 +40,6 @@ import com.example.pawtopia.data.model.chatList
 
 @Composable
 fun ChatScreen(
-    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 

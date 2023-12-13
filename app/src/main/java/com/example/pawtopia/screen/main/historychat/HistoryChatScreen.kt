@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen.main.chatlist
+package com.example.pawtopia.screen.main.historychat
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,14 +31,13 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.component.TopBar
 
 @Composable
-fun ChatListScreen(
+fun HistoryChatScreen(
     navigateToChat: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(20.dp, 20.dp, 20.dp, 0.dp)) {
-
         TopBar(
-            title = "Doctor Consultation",
+            title = "Chat History",
             modifier = Modifier
                 .padding(bottom = 20.dp)
         )

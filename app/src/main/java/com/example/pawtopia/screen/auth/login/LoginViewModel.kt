@@ -1,34 +1,25 @@
-package com.example.pawtopia.screen.auth.register
+package com.example.pawtopia.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pawtopia.common.state.UiState
 import com.example.pawtopia.domain.repository.AuthRepository
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
-    fun register(
-        name: String,
+    fun login(
         email: String,
         password: String,
         success: () -> Unit = {},
-        failed: (Task<AuthResult>) -> Unit = {}
+        failed: () -> Unit = {}
     ) {
         viewModelScope.launch {
-            authRepository.register(
-                name = name,
+            authRepository.login(
                 email = email,
                 password = password,
                 success = success,
