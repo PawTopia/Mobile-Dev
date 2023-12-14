@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pawtopia.navigation.BottomBarScreen
 import com.example.pawtopia.navigation.FeaturesScreen
-import com.example.pawtopia.screen.main.home.HomeScreen
 import com.example.pawtopia.screen.main.favorites.SavedScreen
 import com.example.pawtopia.screen.main.historychat.HistoryChatScreen
+import com.example.pawtopia.screen.main.home.HomeScreen
 import com.example.pawtopia.screen.main.profile.ProfileScreen
 
 @Composable
@@ -30,7 +30,9 @@ fun MainNavGraph(
                 navigateToFindClinic = {
                     navController.navigate(FeaturesScreen.FindClinic.route)
                 },
-                navigateToSuspect = { },
+                navigateToSuspect = {
+                    navController.navigate(FeaturesScreen.PetDiagnosis.route)
+                },
                 navigateToDetailClinic = {
                     navController.navigate(FeaturesScreen.DetailClinic.route)
                 },
@@ -42,9 +44,11 @@ fun MainNavGraph(
             })
         }
         composable(route = BottomBarScreen.Favorites.route) {
-            SavedScreen(navigateToDetailClinic = {
-                navController.navigate(FeaturesScreen.DetailClinic.route)
-            }, navigateUp = {})
+            SavedScreen(
+                navigateToDetailClinic = {
+                    navController.navigate(FeaturesScreen.DetailClinic.route)
+                }
+            )
         }
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(
@@ -54,6 +58,7 @@ fun MainNavGraph(
 
         featuresNavGraph(
             onFeaturesTitleChanged = onFeaturesTitleChanged,
-            navController = navController)
+            navController = navController
+        )
     }
 }

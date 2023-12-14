@@ -14,7 +14,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,12 +43,16 @@ fun HistoryChatScreen(
             modifier = Modifier
                 .padding(bottom = 20.dp)
         )
-        Button(
+        ElevatedButton(
             onClick = { navigateToChat() },
             modifier = Modifier
                 .align(Alignment.End),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-            shape = MaterialTheme.shapes.medium
+            shape = MaterialTheme.shapes.medium,
+            colors = ButtonDefaults.elevatedButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
         ) {
             Text(text = "New Chat")
             Spacer(modifier = Modifier.width(4.dp))

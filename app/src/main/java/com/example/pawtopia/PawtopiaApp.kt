@@ -17,7 +17,7 @@ fun PawtopiaApp() {
     val user = Firebase.auth.currentUser
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.background_transparent),
+            painter = painterResource(id = R.drawable.background),
             contentDescription = "Background",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()

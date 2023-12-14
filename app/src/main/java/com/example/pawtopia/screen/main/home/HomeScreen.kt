@@ -70,7 +70,7 @@ fun HomeScreen(
         contentAlignment = Alignment.TopCenter
     ) {
         Image(
-            painter = painterResource(id = R.drawable.background_transparent),
+            painter = painterResource(id = R.drawable.background),
             contentDescription = "Background",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()

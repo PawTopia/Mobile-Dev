@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -68,7 +69,8 @@ fun MainScreen(
             TopAppBar(
                 title = title,
                 navController = navController,
-                topBarDestination = currentRoute !in topBarItem
+                topBarDestination = currentRoute !in topBarItem,
+                modifier = modifier.shadow(elevation = 1.dp)
             )
         },
         bottomBar = {

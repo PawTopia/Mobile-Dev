@@ -48,7 +48,6 @@ fun ChatScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(White)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -56,14 +55,7 @@ fun ChatScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(
-                        LightGray, RoundedCornerShape(
-                            topStart = 30.dp, topEnd = 30.dp
-                        )
-                    )
                     .padding(top = 25.dp)
-
-
             ) {
                 LazyColumn(
                     modifier = Modifier.padding(
@@ -139,7 +131,7 @@ fun CustomTextField(
                 text = "Message",
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = Color.Black
+                    color = Color.Gray
                 ),
                 textAlign = TextAlign.Center
             )

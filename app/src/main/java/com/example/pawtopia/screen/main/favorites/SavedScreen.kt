@@ -17,7 +17,6 @@ import com.example.pawtopia.data.model.clinicList
 @Composable
 fun SavedScreen(
     navigateToDetailClinic: () -> Unit,
-    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(

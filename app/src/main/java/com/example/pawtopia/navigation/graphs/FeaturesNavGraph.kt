@@ -10,6 +10,8 @@ import com.example.pawtopia.screen.features.clinic.DetailClinicScreen
 import com.example.pawtopia.screen.features.clinic.FindClinicScreen
 import com.example.pawtopia.screen.features.doctor.DetailDoctorScreen
 import com.example.pawtopia.screen.features.doctor.FindDoctorScreen
+import com.example.pawtopia.screen.features.suspect.PetDiagnosisScreen
+import com.example.pawtopia.screen.features.suspect.SuspectedDiagnosisScreen
 
 fun NavGraphBuilder.featuresNavGraph(
     onFeaturesTitleChanged: (String) -> Unit,
@@ -20,10 +22,14 @@ fun NavGraphBuilder.featuresNavGraph(
         startDestination = FeaturesScreen.PetDiagnosis.route
     ) {
         composable(route = FeaturesScreen.PetDiagnosis.route) {
-
+            PetDiagnosisScreen(navigateToSuspect = {
+                navController.navigate(FeaturesScreen.SuspectDiagnosis.route)
+            })
+            onFeaturesTitleChanged("Cek Gejala")
         }
         composable(route = FeaturesScreen.SuspectDiagnosis.route) {
-
+            SuspectedDiagnosisScreen()
+            onFeaturesTitleChanged("Suspect Penyakit")
         }
         composable(route = FeaturesScreen.FindDoctor.route) {
             FindDoctorScreen(
@@ -31,9 +37,11 @@ fun NavGraphBuilder.featuresNavGraph(
                     navController.navigate(FeaturesScreen.DetailDoctor.route)
                 },
             )
+            onFeaturesTitleChanged("Pilih Dokter Terbaikmu")
         }
         composable(route = FeaturesScreen.DetailDoctor.route) {
             DetailDoctorScreen()
+            onFeaturesTitleChanged("Dokter Simatupang")
         }
         composable(route = FeaturesScreen.FindClinic.route) {
             FindClinicScreen(
@@ -44,7 +52,9 @@ fun NavGraphBuilder.featuresNavGraph(
             )
         }
         composable(route = FeaturesScreen.DetailClinic.route) {
-            DetailClinicScreen(navigateUp = { navController.navigateUp() })
+            DetailClinicScreen()
+            onFeaturesTitleChanged("Klinik Hewan Cengkeh")
+
         }
         composable(route = FeaturesScreen.Conversation.route) {
             ChatScreen()

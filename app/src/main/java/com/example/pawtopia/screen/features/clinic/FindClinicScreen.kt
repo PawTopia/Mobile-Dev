@@ -12,12 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.pawtopia.R
 import com.example.pawtopia.common.component.ClinicItem
+import com.example.pawtopia.common.component.CustomSearchBar
 import com.example.pawtopia.common.component.OutlinedBackButton
 import com.example.pawtopia.data.model.clinicList
 
@@ -67,23 +64,12 @@ fun FindClinicScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
-        SearchBar(
+        CustomSearchBar(
             query = query,
             onQueryChange = { query = it },
-            onSearch = {},
-            active = false,
-            onActiveChange = {},
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            },
-            shape = MaterialTheme.shapes.medium
-        ) {
+            placeholderText = "Temukan lokasi klinik"
+        )
 
-        }
         LazyColumn {
             items(clinicList) {
                 ClinicItem(name = it.name, onClick = navigateToDetailClinic)

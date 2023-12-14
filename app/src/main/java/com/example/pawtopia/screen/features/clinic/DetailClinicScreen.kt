@@ -32,7 +32,6 @@ import com.example.pawtopia.common.component.TopBar
 
 @Composable
 fun DetailClinicScreen(
-    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
