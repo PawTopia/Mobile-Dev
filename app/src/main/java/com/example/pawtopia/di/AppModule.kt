@@ -3,7 +3,9 @@ package com.example.pawtopia.di
 import com.example.pawtopia.data.remote.ApiService
 import com.example.pawtopia.BuildConfig
 import com.example.pawtopia.data.repository.AuthRepositoryImpl
+import com.example.pawtopia.data.repository.SymptomRepositoryImpl
 import com.example.pawtopia.domain.repository.AuthRepository
+import com.example.pawtopia.domain.repository.SymptomRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -39,6 +41,10 @@ object AppModule {
             .build()
         return retrofit.create(ApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideSymptoms(apiService: ApiService): SymptomRepository = SymptomRepositoryImpl(apiService)
 
     @Provides fun provideAuth(): FirebaseAuth = Firebase.auth
 

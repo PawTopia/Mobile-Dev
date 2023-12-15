@@ -68,4 +68,28 @@ val chatList = listOf(
         "12:21 PM",
         true
     ),
+    Chat(
+        11,
+        "Hey! How have you been?",
+        "12:15 PM",
+        true
+    ),
+    Chat(
+        12,
+        "Hey! How have you been?",
+        "12:15 PM",
+        true
+    ),
+    Chat(
+        13,
+        "Hey! How have you been?",
+        "12:15 PM",
+        true
+    ),
+    Chat(
+        14,
+        "Hey! How have you been?",
+        "12:15 PM",
+        true
+    ),
 )

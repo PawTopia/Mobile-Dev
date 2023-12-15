@@ -10,7 +10,7 @@ import com.example.pawtopia.screen.features.clinic.DetailClinicScreen
 import com.example.pawtopia.screen.features.clinic.FindClinicScreen
 import com.example.pawtopia.screen.features.doctor.DetailDoctorScreen
 import com.example.pawtopia.screen.features.doctor.FindDoctorScreen
-import com.example.pawtopia.screen.features.suspect.PetDiagnosisScreen
+import com.example.pawtopia.screen.features.suspect.pet_diagnosis.PetDiagnosisScreen
 import com.example.pawtopia.screen.features.suspect.SuspectedDiagnosisScreen
 
 fun NavGraphBuilder.featuresNavGraph(
