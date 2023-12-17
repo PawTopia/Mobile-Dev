@@ -16,8 +16,9 @@ data class Symptom(
     val isSelected: Boolean = false,
 )
 
-data class Predict(
+data class PredictResponse(
     val prediction: String,
+    val data: List<PredictData>,
     val gejala: String,
     val message: String,
 )

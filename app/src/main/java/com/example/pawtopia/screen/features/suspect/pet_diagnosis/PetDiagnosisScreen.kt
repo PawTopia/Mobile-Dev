@@ -1,6 +1,7 @@
 package com.example.pawtopia.screen.features.suspect.pet_diagnosis
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -46,9 +48,32 @@ fun PetDiagnosisScreen(
     viewModel: PetDiagnosisViewModel = hiltViewModel(),
 ) {
     var query by remember { mutableStateOf("") }
-    val result by viewModel.symptom.collectAsStateWithLifecycle()
+    val symptom by viewModel.symptom.collectAsStateWithLifecycle()
+    val predict by viewModel.predict.collectAsStateWithLifecycle()
 //    var items by remember { mutableStateOf(emptyList<Symptom>()) }
+    val listGejala = listOf(1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
+    when (val predictData = predict) {
+        is Resource.Loading -> {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is Resource.Success -> {
+            Log.d("TAG", predictData.data.toString())
+        }
+
+        is Resource.Error -> {
+            Toast.makeText(LocalContext.current, "Error Predict", Toast.LENGTH_SHORT).show()
+        }
+
+        else -> {}
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -72,7 +97,7 @@ fun PetDiagnosisScreen(
                 onQueryChange = { query = it },
                 placeholderText = "Cari gejala hewan peliharaan anda"
             )
-            when (val resultData = result) {
+            when (val symptomData = symptom) {
                 is Resource.Loading -> {
                     Column(
                         verticalArrangement = Arrangement.Center,
@@ -84,12 +109,11 @@ fun PetDiagnosisScreen(
                 }
 
                 is Resource.Success -> {
-                    var items by remember { mutableStateOf(resultData.data.data) }
+                    var items by remember { mutableStateOf(symptomData.data.data) }
 
 //                    var items by remember { mutableStateOf(emptyList<Symptom>()) }
 //
 //                    items = resultData.data.data
-                    Log.d("items",items.toString())
                     PetDiagnosisContent(
                         items = items,
                         onChange = {
@@ -104,14 +128,18 @@ fun PetDiagnosisScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        Text(text = "Error")
+                        Text(text = "Error Symptom")
                     }
                 }
+
                 else -> {}
             }
         }
         ElevatedButton(
-            onClick = { navigateToSuspect() },
+            onClick = {
+//                navigateToSuspect()
+                viewModel.postSymptom(listGejala.joinToString(","))
+            },
             modifier = Modifier.fillMaxWidth(0.8f),
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.elevatedButtonColors(
@@ -151,7 +179,7 @@ fun PetDiagnosisContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                           onChange (items.mapIndexed { j, item ->
+                            onChange(items.mapIndexed { j, item ->
                                 if (i == j) {
                                     item.copy(isSelected = !item.isSelected)
                                 } else item
@@ -161,7 +189,7 @@ fun PetDiagnosisContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text =  items[i].name)
+                    Text(text = items[i].name)
                     Checkbox(
                         checked = items[i].isSelected,
                         onCheckedChange = { isSelected ->

@@ -61,7 +61,7 @@ fun HomeScreen(
     navigateToDoctor: () -> Unit,
     navigateToFindClinic: () -> Unit,
     navigateToSuspect: () -> Unit,
-    navigateToDetailClinic: (String) -> Unit,
+    navigateToDetailClinic: (String, Int) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val displayName = viewModel.userDisplayName.toString()
@@ -217,7 +217,7 @@ fun FeatureButton(
 @Composable
 fun ClinicsRow(
     clinicList: List<Clinic>,
-    onClick: (String) -> Unit,
+    onClick: (String, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val rowState = rememberLazyListState()
@@ -230,7 +230,7 @@ fun ClinicsRow(
             ClinicHomeItem(
                 name = clinic.name,
                 photoUrl = clinic.photoUrl,
-                onClick = { onClick(clinic.name) }
+                onClick = { onClick(clinic.name, clinic.id) }
             )
         }
     }

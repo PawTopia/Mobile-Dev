@@ -33,9 +33,9 @@ fun MainNavGraph(
                 navigateToSuspect = {
                     navController.navigate(FeaturesScreen.PetDiagnosis.route)
                 },
-                navigateToDetailClinic = {
-                    navController.navigate(FeaturesScreen.DetailClinic.route)
-                    onFeaturesTitleChanged(it)
+                navigateToDetailClinic = { title, id ->
+                    navController.navigate(FeaturesScreen.DetailClinic.createRoute(id))
+                    onFeaturesTitleChanged(title)
                 },
             )
         }
@@ -51,9 +51,9 @@ fun MainNavGraph(
         }
         composable(route = BottomBarScreen.Favorites.route) {
             SavedScreen(
-                navigateToDetailClinic = {
-                    navController.navigate(FeaturesScreen.DetailClinic.route)
-                    onFeaturesTitleChanged(it)
+                navigateToDetailClinic = { title, id ->
+                    navController.navigate(FeaturesScreen.DetailClinic.createRoute(id))
+                    onFeaturesTitleChanged(title)
                 }
             )
         }

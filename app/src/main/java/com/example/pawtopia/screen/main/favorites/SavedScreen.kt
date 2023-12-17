@@ -16,7 +16,7 @@ import com.example.pawtopia.common.util.DataDummy.dummyClinic
 
 @Composable
 fun SavedScreen(
-    navigateToDetailClinic: (String) -> Unit,
+    navigateToDetailClinic: (String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -36,7 +36,7 @@ fun SavedScreen(
                         name = it.name,
                         description = it.desc,
                         rating = it.rating,
-                        onClick = { navigateToDetailClinic(it.name) }
+                        onClick = { navigateToDetailClinic(it.name, it.id) }
                     )
                 }
             }

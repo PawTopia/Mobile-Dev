@@ -1,8 +1,9 @@
 package com.example.pawtopia.di
 
 import android.content.Context
-import com.example.pawtopia.data.remote.ApiService
+import com.example.pawtopia.data.remote.SymptomApi
 import com.example.pawtopia.BuildConfig
+import com.example.pawtopia.data.remote.SuspectApi
 import com.example.pawtopia.data.repository.AuthRepositoryImpl
 import com.example.pawtopia.data.repository.DataStoreRepositoryImpl
 import com.example.pawtopia.data.repository.PawtopiaRepositoryImpl
@@ -33,10 +34,9 @@ object AppModule {
         @ApplicationContext context: Context
     ): DataStoreRepository = DataStoreRepositoryImpl(context = context)
 
-
     @Provides
     @Singleton
-    fun provideApiService(): ApiService {
+    fun provideSymptomService(): SymptomApi {
         val loggingInterceptor = if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         } else {
@@ -46,16 +46,36 @@ object AppModule {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BuildConfig.SYMPTOM_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(ApiService::class.java)
+        return retrofit.create(SymptomApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideSymptoms(apiService: ApiService): PawtopiaRepository = PawtopiaRepositoryImpl(apiService)
+    fun provideSuspectService(): SuspectApi {
+        val loggingInterceptor = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        } else {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.SUSPECT_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(SuspectApi::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideSymptoms(symptomApi: SymptomApi, suspectApi: SuspectApi): PawtopiaRepository = PawtopiaRepositoryImpl(symptomApi,suspectApi)
 
     @Provides fun provideAuth(): FirebaseAuth = Firebase.auth
 

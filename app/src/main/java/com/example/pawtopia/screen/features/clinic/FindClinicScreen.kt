@@ -32,7 +32,7 @@ import com.example.pawtopia.common.util.DataDummy.dummyClinic
 
 @Composable
 fun FindClinicScreen(
-    navigateToDetailClinic: (String) -> Unit,
+    navigateToDetailClinic: (String, Int) -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -74,7 +74,7 @@ fun FindClinicScreen(
                     name = it.name,
                     description = it.desc,
                     rating = it.rating,
-                    onClick = { navigateToDetailClinic(it.name) }
+                    onClick = { navigateToDetailClinic(it.name, it.id) }
                 )
             }
         }

@@ -61,17 +61,18 @@ fun NavGraphBuilder.featuresNavGraph(
         }
         composable(route = FeaturesScreen.FindClinic.route) {
             FindClinicScreen(
-                navigateToDetailClinic = {
-                    navController.navigate(FeaturesScreen.DetailClinic.route)
-                    onFeaturesTitleChanged(it)
+                navigateToDetailClinic = { title, id ->
+                    navController.navigate(FeaturesScreen.DetailClinic.createRoute(id))
+                    onFeaturesTitleChanged(title)
                 },
                 navigateUp = { navController.navigateUp() }
             )
         }
         composable(route = FeaturesScreen.DetailClinic.route,
-            arguments = listOf(navArgument("clinicId") {})
+            arguments = listOf(navArgument("clinicId") {type = NavType.IntType})
         ) {
-            DetailClinicScreen()
+            val clinidId = it.arguments?.getInt("clinicId") ?: -1
+            DetailClinicScreen(clinidId)
         }
         composable(route = FeaturesScreen.Conversation.route) {
             ChatScreen()

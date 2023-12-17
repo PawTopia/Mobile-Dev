@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 
@@ -37,7 +38,7 @@ fun ClinicItem(
                 RatingBar(rating = rating)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = description)
+            Text(text = description, overflow = TextOverflow.Clip, maxLines = 2, softWrap = true)
         }
     }
 }
