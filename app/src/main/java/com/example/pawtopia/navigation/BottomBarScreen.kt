@@ -1,43 +1,41 @@
 package com.example.pawtopia.navigation
 
+import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Icon
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import com.example.pawtopia.R
 
 sealed class BottomBarScreen(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    @DrawableRes
+    val icon: Int,
 ) {
     data object Home : BottomBarScreen(
         route = "HOME",
         title = "Beranda",
-        icon = Icons.Default.Home
+        icon = R.drawable.ic_home
     )
 
     data object Chat : BottomBarScreen(
         route = "CHAT",
         title = "Chat Bot",
-        icon = Icons.Default.Chat
+        icon = R.drawable.ic_chat
     )
 
     data object Favorites : BottomBarScreen(
         route = "FAVORITES",
         title = "Favorit",
-        icon = Icons.Default.StarOutline
+        icon = R.drawable.star_outline
     )
 
     data object Profile : BottomBarScreen(
         route = "PROFILE",
         title = "Profil",
-        icon = Icons.Default.Person
+        icon = R.drawable.ic_person
     )
 
 

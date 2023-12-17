@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,12 +28,11 @@ import com.example.pawtopia.R
 import com.example.pawtopia.common.component.ClinicItem
 import com.example.pawtopia.common.component.CustomSearchBar
 import com.example.pawtopia.common.component.OutlinedBackButton
-import com.example.pawtopia.data.model.clinicList
+import com.example.pawtopia.common.util.DataDummy.dummyClinic
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FindClinicScreen(
-    navigateToDetailClinic: () -> Unit,
+    navigateToDetailClinic: (String) -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -71,8 +69,13 @@ fun FindClinicScreen(
         )
 
         LazyColumn {
-            items(clinicList) {
-                ClinicItem(name = it.name, onClick = navigateToDetailClinic)
+            items(dummyClinic) {
+                ClinicItem(
+                    name = it.name,
+                    description = it.desc,
+                    rating = it.rating,
+                    onClick = { navigateToDetailClinic(it.name) }
+                )
             }
         }
 

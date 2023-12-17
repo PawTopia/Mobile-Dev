@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pawtopia.screen.main.MainScreen
-import com.example.pawtopia.screen.WelcomeScreen
+import com.example.pawtopia.screen.welcome.WelcomeScreen
 
 @Composable
 fun RootNavigationGraph(
@@ -36,6 +36,7 @@ fun RootNavigationGraph(
                 }
             )
         }
+        composable(route = Graph.NONE) { }
 
     }
 }
@@ -46,4 +47,5 @@ object Graph {
     const val MAIN = "main_graph"
     const val ONBOARDING = "onboarding_graph"
     const val FEATURES = "features_graph"
+    const val NONE = "none_graph"
 }

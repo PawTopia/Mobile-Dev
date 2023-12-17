@@ -44,26 +44,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.R
+import com.example.pawtopia.common.util.DataDummy.dummyClinic
 import com.example.pawtopia.common.util.fillWidthOfParent
 import com.example.pawtopia.data.model.Clinic
-import com.example.pawtopia.data.model.clinicList
 import com.example.pawtopia.ui.theme.consultColor
 import com.example.pawtopia.ui.theme.diagnoseColor
 import com.example.pawtopia.ui.theme.onConsultColor
 import com.example.pawtopia.ui.theme.onDiagnoseColor
 import com.example.pawtopia.ui.theme.onRecommendColor
 import com.example.pawtopia.ui.theme.recommendColor
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @Composable
 fun HomeScreen(
     navigateToDoctor: () -> Unit,
     navigateToFindClinic: () -> Unit,
     navigateToSuspect: () -> Unit,
-    navigateToDetailClinic: () -> Unit
+    navigateToDetailClinic: (String) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val displayName = viewModel.userDisplayName.toString()
+
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -75,13 +77,11 @@ fun HomeScreen(
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()
         )
-
-        val user = Firebase.auth.currentUser
         Column(
             modifier = Modifier
                 .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 0.dp)
         ) {
-            ProfileCard(name = user?.displayName)
+            ProfileCard(name = displayName)
             Spacer(modifier = Modifier.height(12.dp))
             Divider(
                 modifier = Modifier.fillWidthOfParent(24.dp),
@@ -89,7 +89,7 @@ fun HomeScreen(
             )
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Card() {
+                Card {
                     Column(
                         modifier = Modifier.padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -122,7 +122,7 @@ fun HomeScreen(
                 Card {
                     Column(modifier = Modifier.padding(12.dp, 8.dp, 12.dp, 0.dp)) {
                         Text(text = "Pet Care Nearby You", fontWeight = FontWeight.Bold)
-                        ClinicsRow(clinicList = clinicList, onClick = navigateToDetailClinic)
+                        ClinicsRow(clinicList = dummyClinic, onClick = navigateToDetailClinic)
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -217,7 +217,7 @@ fun FeatureButton(
 @Composable
 fun ClinicsRow(
     clinicList: List<Clinic>,
-    onClick: () -> Unit,
+    onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val rowState = rememberLazyListState()
@@ -227,7 +227,11 @@ fun ClinicsRow(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(clinicList) { clinic ->
-            ClinicHomeItem(clinic.name, clinic.photoUrl, onClick)
+            ClinicHomeItem(
+                name = clinic.name,
+                photoUrl = clinic.photoUrl,
+                onClick = { onClick(clinic.name) }
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.pawtopia.screen.features.suspect.pet_diagnosis
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.pawtopia.common.component.CustomSearchBar
+import com.example.pawtopia.common.state.Resource
+import com.example.pawtopia.data.model.Symptom
 
 @Composable
 fun PetDiagnosisScreen(
@@ -41,22 +45,10 @@ fun PetDiagnosisScreen(
     modifier: Modifier = Modifier,
     viewModel: PetDiagnosisViewModel = hiltViewModel(),
 ) {
-
-    val checkedState = remember {
-        mutableStateOf(false)
-    }
-    var items by remember {
-        mutableStateOf(
-            (1..20).map {
-                ListItem(
-                    title = "Item $it",
-                    isSelected = false
-                )
-            }
-        )
-    }
     var query by remember { mutableStateOf("") }
-    val symptom by viewModel.symptom.collectAsStateWithLifecycle()
+    val result by viewModel.symptom.collectAsStateWithLifecycle()
+//    var items by remember { mutableStateOf(emptyList<Symptom>()) }
+
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -76,59 +68,48 @@ fun PetDiagnosisScreen(
                 style = MaterialTheme.typography.titleMedium
             )
             CustomSearchBar(
-                query = query, onQueryChange = {
-                    query = it
-                },
+                query = query,
+                onQueryChange = { query = it },
                 placeholderText = "Cari gejala hewan peliharaan anda"
             )
-            LazyColumn() {
-                item {
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
-                items(items.size) { i ->
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color.Transparent
-                        ),
-                        border = BorderStroke(
-                            width = Dp.Hairline,
-                            color = MaterialTheme.colorScheme.outline
-                        )
+            when (val resultData = result) {
+                is Resource.Loading -> {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    items = items.mapIndexed { j, item ->
-                                        if (i == j) {
-                                            item.copy(isSelected = !item.isSelected)
-                                        } else item
-                                    }
-                                }
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = items[i].title)
-                            Checkbox(
-                                checked = items[i].isSelected,
-                                onCheckedChange = { isSelected ->
-                                    items = items.toMutableList().also {
-                                        it[i] = it[i].copy(isSelected = isSelected)
-                                    }
-                                },
-                                colors = CheckboxDefaults.colors(
-                                    checkedColor = MaterialTheme.colorScheme.secondary,
-                                    checkmarkColor = Color.White
-                                )
-                            )
-                        }
+                        CircularProgressIndicator()
                     }
                 }
+
+                is Resource.Success -> {
+                    var items by remember { mutableStateOf(resultData.data.data) }
+
+//                    var items by remember { mutableStateOf(emptyList<Symptom>()) }
+//
+//                    items = resultData.data.data
+                    Log.d("items",items.toString())
+                    PetDiagnosisContent(
+                        items = items,
+                        onChange = {
+                            items = it
+                        }
+                    )
+                }
+
+                is Resource.Error -> {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(text = "Error")
+                    }
+                }
+                else -> {}
             }
         }
-
-
         ElevatedButton(
             onClick = { navigateToSuspect() },
             modifier = Modifier.fillMaxWidth(0.8f),
@@ -138,16 +119,66 @@ fun PetDiagnosisScreen(
                 contentColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
+//            val selectedIndices = items
+//                .mapIndexed { index, data -> if (data.isSelected) 1 else 0 }
             Text(text = "Suspect Penyakit", style = MaterialTheme.typography.headlineSmall)
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
-data class ListItem(
-    val title: String,
-    val isSelected: Boolean
-)
+@Composable
+fun PetDiagnosisContent(
+    items: List<Symptom>,
+    onChange: (List<Symptom>) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        item {
+            Spacer(modifier = Modifier.height(4.dp))
+        }
+        items(items.size) { i ->
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.Transparent
+                ),
+                border = BorderStroke(
+                    width = Dp.Hairline,
+                    color = MaterialTheme.colorScheme.outline
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                           onChange (items.mapIndexed { j, item ->
+                                if (i == j) {
+                                    item.copy(isSelected = !item.isSelected)
+                                } else item
+                            })
+                        }
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text =  items[i].name)
+                    Checkbox(
+                        checked = items[i].isSelected,
+                        onCheckedChange = { isSelected ->
+                            onChange(items.toMutableList().also {
+                                it[i] = it[i].copy(isSelected = isSelected)
+                            })
+                        },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = MaterialTheme.colorScheme.secondary,
+                            checkmarkColor = Color.White
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable

@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ClinicItem(
     name: String,
+    description: String,
+    rating: Double,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -32,10 +34,10 @@ fun ClinicItem(
                     Text(text = name, fontWeight = FontWeight.Bold)
                     Text(text = "8.00 - 17.00")
                 }
-                RatingBar(rating = 3.5)
+                RatingBar(rating = rating)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = LoremIpsum().values.first().take(70))
+            Text(text = description)
         }
     }
 }

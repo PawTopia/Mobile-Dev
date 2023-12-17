@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -24,23 +25,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pawtopia.R
+import com.example.pawtopia.common.util.DataDummy
+import com.example.pawtopia.common.util.DataDummy.dummyDoctor
 
 @Composable
 fun FindDoctorScreen(
-    navigateToDetailDoctor: () -> Unit,
+    navigateToDetailDoctor: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)
     ) {
-        DoctorColumn(navigateToDetailDoctor = navigateToDetailDoctor)
+        DoctorColumn(
+            navigateToDetailDoctor = navigateToDetailDoctor)
     }
 }
 
 @Composable
 fun DoctorColumn(
-    navigateToDetailDoctor: () -> Unit,
+    navigateToDetailDoctor: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val columnState = rememberLazyListState()
@@ -50,14 +54,20 @@ fun DoctorColumn(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item { Spacer(modifier = Modifier.height(8.dp)) }
-        items(20) {
-            DoctorCard(onClick = navigateToDetailDoctor)
+        items(dummyDoctor) {
+            DoctorCard(
+                name = it.name,
+                jobTitle = it.jobTitle,
+                onClick = { navigateToDetailDoctor(it.id) }
+            )
         }
     }
 }
 
 @Composable
 fun DoctorCard(
+    name: String,
+    jobTitle: String,
     onClick: () -> Unit
 ) {
     Card(modifier = Modifier
@@ -76,8 +86,8 @@ fun DoctorCard(
                     .clip(CircleShape)
             )
             Column {
-                Text(text = "James Husk, D", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "Testing Specialist", fontSize = 16.sp, fontWeight = FontWeight.Light)
+                Text(text = name, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = jobTitle, fontSize = 16.sp, fontWeight = FontWeight.Light)
             }
         }
     }

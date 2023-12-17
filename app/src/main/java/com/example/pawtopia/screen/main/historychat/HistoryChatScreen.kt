@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
@@ -31,20 +31,23 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import com.example.pawtopia.R
 import com.example.pawtopia.common.component.TopBar
+import com.example.pawtopia.common.util.DataDummy.dummyChat
+import com.example.pawtopia.common.util.DataDummy.dummyChatHistory
 
 @Composable
 fun HistoryChatScreen(
-    navigateToChat: () -> Unit,
+    navigateToChat: (String) -> Unit,
+    navigateToNewChat: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(20.dp, 20.dp, 20.dp, 0.dp)) {
         TopBar(
             title = "Chat History",
             modifier = Modifier
-                .padding(bottom = 20.dp)
+                .padding(bottom = 15.dp)
         )
         ElevatedButton(
-            onClick = { navigateToChat() },
+            onClick = { navigateToNewChat() },
             modifier = Modifier
                 .align(Alignment.End),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
@@ -58,15 +61,15 @@ fun HistoryChatScreen(
             Spacer(modifier = Modifier.width(4.dp))
             Icon(imageVector = Icons.Default.Add, contentDescription = "New Chat Button")
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(15) {
+            items(dummyChatHistory) {
                 ChatListCard(
-                    titleMessage = "Doctor Consultation",
-                    lastMessage = LoremIpsum().values.first().take(90),
-                    onClick = navigateToChat
+                    recipientName = it.doctorName,
+                    message = dummyChat.last().message,
+                    onClick = { navigateToChat(it.doctorName) }
                 )
             }
         }
@@ -76,8 +79,8 @@ fun HistoryChatScreen(
 
 @Composable
 fun ChatListCard(
-    titleMessage: String,
-    lastMessage: String,
+    recipientName: String,
+    message: String,
     onClick: () -> Unit,
 ) {
     Card(
@@ -95,9 +98,9 @@ fun ChatListCard(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = titleMessage, fontWeight = FontWeight.Bold)
+                Text(text = recipientName, fontWeight = FontWeight.Bold)
                 Text(
-                    text = lastMessage,
+                    text = message,
                     fontWeight = FontWeight.Light,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = true,

@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.rounded.Logout
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
@@ -33,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.R
 import com.example.pawtopia.common.component.TopBar
 import com.google.firebase.auth.FirebaseAuth
@@ -41,7 +38,12 @@ import com.google.firebase.auth.FirebaseAuth
 fun ProfileScreen(
     navigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
+
+    val displayName = viewModel.displayName.toString()
+    val email = viewModel.email.toString()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -67,7 +69,7 @@ fun ProfileScreen(
                     .clip(CircleShape)
             )
             Text(
-                text = "John Delulu",
+                text = displayName,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
             )
@@ -78,15 +80,15 @@ fun ProfileScreen(
         ) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Informasi pribadi", style = MaterialTheme.typography.headlineSmall)
-            TextFieldCard(label = "Nama", value = "John Delulu")
-            TextFieldCard(label = "Nomor Telepon", value = "+62 85 1500 21000")
-            TextFieldCard(label = "Tanggal Lahir", value = "DD MM YYYY")
+            TextFieldCard(label = "Nama", value = displayName)
+            TextFieldCard(label = "Email", value = email)
+            TextFieldCard(label = "Nomor Telepon", value = "+62 85150021000")
             TextFieldCard(label = "Domisili", value = "Medan")
 
         }
         ElevatedButton(
             onClick = {
-                FirebaseAuth.getInstance().signOut()
+                viewModel.logout()
                 navigateToLogin()
             },
             shape = MaterialTheme.shapes.medium,
@@ -101,7 +103,7 @@ fun ProfileScreen(
             ) {
                 Text(text = "Log Out", fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.width(12.dp))
-                Icon(imageVector = Icons.Rounded.Logout, contentDescription = "Logout Button")
+                Icon(painter = painterResource(id = R.drawable.logout), contentDescription = "Logout Button")
             }
         }
     }

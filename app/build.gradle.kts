@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
+//    implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -80,6 +80,9 @@ dependencies {
 
     // Splashscreen API
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.6")

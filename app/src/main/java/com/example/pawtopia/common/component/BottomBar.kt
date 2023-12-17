@@ -10,11 +10,13 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.pawtopia.navigation.BottomBarScreen
+import com.example.pawtopia.ui.theme.starColor
 
 @Composable
 fun BottomBar(
@@ -40,7 +42,7 @@ fun BottomBar(
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)
+                        indicatorColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
                     selected = selected,
                     onClick = {
@@ -56,7 +58,7 @@ fun BottomBar(
                     },
                     icon = {
                         Icon(
-                            imageVector = item.icon,
+                            painter = painterResource(id = item.icon),
                             contentDescription = item.title,
                             tint = if (selected) Color.Red else Color.Gray
                         )

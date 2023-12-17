@@ -12,5 +12,17 @@ data class SymptomResponse(
 data class Symptom(
     val id: Int,
     @field:SerializedName("nama")
-    val name: String
+    val name: String,
+    val isSelected: Boolean = false,
+)
+
+data class Predict(
+    val prediction: String,
+    val gejala: String,
+    val message: String,
+)
+
+data class PredictData(
+    val description: String,
+    val treatment: String,
 )

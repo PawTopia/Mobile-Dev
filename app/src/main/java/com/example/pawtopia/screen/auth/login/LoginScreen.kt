@@ -48,9 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.R
-import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
-import com.google.firebase.auth.FirebaseAuth
+import com.example.pawtopia.common.util.isValidEmail
 
 @Composable
 fun LoginScreen(
@@ -65,7 +64,7 @@ fun LoginScreen(
     var passwordState by remember {
         mutableStateOf(InputTextState())
     }
-    val auth = FirebaseAuth.getInstance()
+
     val context = LocalContext.current
 
 

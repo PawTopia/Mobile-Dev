@@ -35,18 +35,25 @@ fun MainNavGraph(
                 },
                 navigateToDetailClinic = {
                     navController.navigate(FeaturesScreen.DetailClinic.route)
+                    onFeaturesTitleChanged(it)
                 },
             )
         }
         composable(route = BottomBarScreen.Chat.route) {
-            HistoryChatScreen(navigateToChat = {
-                navController.navigate(FeaturesScreen.Conversation.route)
-            })
+            HistoryChatScreen(
+                navigateToNewChat = {
+                    navController.navigate(FeaturesScreen.FindDoctor.route)
+                },
+                navigateToChat = {
+                    navController.navigate(FeaturesScreen.Conversation.route)
+                    onFeaturesTitleChanged(it)
+                })
         }
         composable(route = BottomBarScreen.Favorites.route) {
             SavedScreen(
                 navigateToDetailClinic = {
                     navController.navigate(FeaturesScreen.DetailClinic.route)
+                    onFeaturesTitleChanged(it)
                 }
             )
         }
@@ -55,7 +62,6 @@ fun MainNavGraph(
                 navigateToLogin = navigateToAuth,
             )
         }
-
         featuresNavGraph(
             onFeaturesTitleChanged = onFeaturesTitleChanged,
             navController = navController

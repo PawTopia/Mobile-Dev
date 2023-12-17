@@ -1,8 +1,11 @@
 package com.example.pawtopia.navigation.graphs
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.pawtopia.navigation.FeaturesScreen
 import com.example.pawtopia.screen.features.chat.ChatScreen
@@ -31,34 +34,47 @@ fun NavGraphBuilder.featuresNavGraph(
             SuspectedDiagnosisScreen()
             onFeaturesTitleChanged("Suspect Penyakit")
         }
-        composable(route = FeaturesScreen.FindDoctor.route) {
+        composable(route = FeaturesScreen.FindDoctor.route,
+        ) {
             FindDoctorScreen(
                 navigateToDetailDoctor = {
-                    navController.navigate(FeaturesScreen.DetailDoctor.route)
+                    navController.navigate(FeaturesScreen.DetailDoctor.createRoute(it))
                 },
             )
             onFeaturesTitleChanged("Pilih Dokter Terbaikmu")
+
         }
-        composable(route = FeaturesScreen.DetailDoctor.route) {
-            DetailDoctorScreen()
-            onFeaturesTitleChanged("Dokter Simatupang")
+        composable(route = FeaturesScreen.DetailDoctor.route,
+            arguments = listOf(navArgument("doctorId") { type = NavType.IntType})
+            ) {
+            val doctorId = it.arguments?.getInt("doctorId") ?: -1
+            DetailDoctorScreen(
+                doctorId = doctorId,
+                navigateToConversation = {
+                    navController.navigate(FeaturesScreen.Conversation.route)
+                    onFeaturesTitleChanged(it)
+                }
+            )
+            LaunchedEffect(true ) {
+                onFeaturesTitleChanged("Profil Dokter")
+            }
         }
         composable(route = FeaturesScreen.FindClinic.route) {
             FindClinicScreen(
                 navigateToDetailClinic = {
                     navController.navigate(FeaturesScreen.DetailClinic.route)
+                    onFeaturesTitleChanged(it)
                 },
                 navigateUp = { navController.navigateUp() }
             )
         }
-        composable(route = FeaturesScreen.DetailClinic.route) {
+        composable(route = FeaturesScreen.DetailClinic.route,
+            arguments = listOf(navArgument("clinicId") {})
+        ) {
             DetailClinicScreen()
-            onFeaturesTitleChanged("Klinik Hewan Cengkeh")
-
         }
         composable(route = FeaturesScreen.Conversation.route) {
             ChatScreen()
-            onFeaturesTitleChanged("Doctor Simatupang")
         }
     }
 }

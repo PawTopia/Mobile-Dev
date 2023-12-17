@@ -1,17 +1,21 @@
 package com.example.pawtopia.di
 
+import android.content.Context
 import com.example.pawtopia.data.remote.ApiService
 import com.example.pawtopia.BuildConfig
 import com.example.pawtopia.data.repository.AuthRepositoryImpl
-import com.example.pawtopia.data.repository.SymptomRepositoryImpl
+import com.example.pawtopia.data.repository.DataStoreRepositoryImpl
+import com.example.pawtopia.data.repository.PawtopiaRepositoryImpl
 import com.example.pawtopia.domain.repository.AuthRepository
-import com.example.pawtopia.domain.repository.SymptomRepository
+import com.example.pawtopia.domain.repository.DataStoreRepository
+import com.example.pawtopia.domain.repository.PawtopiaRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,6 +26,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideDataStore(
+        @ApplicationContext context: Context
+    ): DataStoreRepository = DataStoreRepositoryImpl(context = context)
+
 
     @Provides
     @Singleton
@@ -44,7 +55,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSymptoms(apiService: ApiService): SymptomRepository = SymptomRepositoryImpl(apiService)
+    fun provideSymptoms(apiService: ApiService): PawtopiaRepository = PawtopiaRepositoryImpl(apiService)
 
     @Provides fun provideAuth(): FirebaseAuth = Firebase.auth
 

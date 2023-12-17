@@ -48,15 +48,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.R
-import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.state.InputTextState
+import com.example.pawtopia.common.util.isValidEmail
 import com.example.pawtopia.common.util.validate
 import com.example.pawtopia.screen.auth.login.InputText
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.userProfileChangeRequest
-import com.google.firebase.ktx.Firebase
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun RegisterScreen(

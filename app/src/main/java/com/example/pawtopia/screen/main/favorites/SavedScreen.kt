@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.pawtopia.common.component.ClinicItem
 import com.example.pawtopia.common.component.TopBar
-import com.example.pawtopia.data.model.clinicList
+import com.example.pawtopia.common.util.DataDummy.dummyClinic
 
 @Composable
 fun SavedScreen(
-    navigateToDetailClinic: () -> Unit,
+    navigateToDetailClinic: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -31,8 +31,13 @@ fun SavedScreen(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(clinicList) {
-                    ClinicItem(name = it.name, onClick = navigateToDetailClinic)
+                items(dummyClinic) {
+                    ClinicItem(
+                        name = it.name,
+                        description = it.desc,
+                        rating = it.rating,
+                        onClick = { navigateToDetailClinic(it.name) }
+                    )
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.pawtopia.screen
+package com.example.pawtopia.screen.welcome
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pawtopia.ui.theme.*
 import com.example.pawtopia.data.model.OnBoardingPage
 import kotlinx.coroutines.launch
@@ -44,8 +45,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun WelcomeScreen(
     navigateToAuth: () -> Unit,
-    onNavUp: () -> Unit
+    onNavUp: () -> Unit,
+    viewModel: WelcomeScreenViewModel = hiltViewModel()
 ) {
+
     val pagerState = rememberPagerState(pageCount = {
         3
     })
@@ -116,6 +119,7 @@ fun WelcomeScreen(
                     pagerState.scrollToPage(pagerState.currentPage + 1)
                 }
             } else {
+                viewModel.saveOnboardingState(true)
                 navigateToAuth()
             }
         }

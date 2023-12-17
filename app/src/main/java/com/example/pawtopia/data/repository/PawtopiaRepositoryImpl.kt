@@ -1,19 +1,20 @@
 package com.example.pawtopia.data.repository
 
 import com.example.pawtopia.common.state.Resource
+import com.example.pawtopia.common.util.DataDummy
+import com.example.pawtopia.data.model.Doctor
 import com.example.pawtopia.data.model.Response
-import com.example.pawtopia.data.model.Symptom
 import com.example.pawtopia.data.model.SymptomResponse
 import com.example.pawtopia.data.remote.ApiService
-import com.example.pawtopia.domain.repository.SymptomRepository
+import com.example.pawtopia.domain.repository.PawtopiaRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 
-class SymptomRepositoryImpl(
+class PawtopiaRepositoryImpl(
     private val apiService: ApiService
-): SymptomRepository {
+): PawtopiaRepository {
 
     override suspend fun getSymptoms(): Flow<Resource<SymptomResponse>> = flow {
         emit(Resource.Loading)
@@ -29,6 +30,10 @@ class SymptomRepositoryImpl(
                 emit(Resource.Error(e.message.toString()))
             }
         }
+    }
+
+    override fun doctorById(doctorId: Int): Flow<Doctor> = flow {
+        DataDummy.dummyDoctor.find { it.id == doctorId }?.let { emit(it) }
     }
 
 }
