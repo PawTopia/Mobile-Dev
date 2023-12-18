@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,30 +50,38 @@ fun PetDiagnosisScreen(
     var query by remember { mutableStateOf("") }
     val symptom by viewModel.symptom.collectAsStateWithLifecycle()
     val predict by viewModel.predict.collectAsStateWithLifecycle()
-//    var items by remember { mutableStateOf(emptyList<Symptom>()) }
-//    val listGejala = listOf(1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    val context = LocalContext.current
 
-    when (val predictData = predict) {
-        is Resource.Loading -> {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator()
+    predict.let {
+        if (!predict.hasBeenHandled) {
+            when (val predictData = predict.getContentIfNotHandled()) {
+                is Resource.Loading -> {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                is Resource.Success -> {
+                    navigateToSuspect(
+                        predictData.data.prediction,
+                        predictData.data.data.description,
+                        predictData.data.data.treatment
+                    )
+                }
+
+                is Resource.Error -> {
+                    Toast.makeText(LocalContext.current, "Error Predict", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {}
             }
         }
-
-        is Resource.Success -> {
-            navigateToSuspect(predictData.data.prediction, predictData.data.data.description, predictData.data.data.treatment)
-        }
-
-        is Resource.Error -> {
-            Toast.makeText(LocalContext.current, "Error Predict", Toast.LENGTH_SHORT).show()
-        }
-
-        else -> {}
     }
+
 
     when (val symptomData = symptom) {
         is Resource.Loading -> {
@@ -87,21 +96,31 @@ fun PetDiagnosisScreen(
 
         is Resource.Success -> {
             var items by remember { mutableStateOf(symptomData.data.data) }
+            var totalSelected by remember { mutableIntStateOf(0) }
 
             PetDiagnosisContent(
                 query = query,
                 onQueryChange = { query = it },
                 listSymptom = items,
-                onSymptomChange = { items = it },
+                onSymptomChange = { symptomList ->
+                    items = symptomList
+                    val filteredItems = symptomList.filter { it.isSelected }
+                    totalSelected = filteredItems.count()
+                },
                 onSubmitClick = {
-                    val selectedItems = items.mapIndexed { _, data ->
-                        if (data.isSelected) 1 else 0
+                    if (totalSelected > 2) {
+                        val selectedItems = items.mapIndexed { _, data ->
+                            if (data.isSelected) 1 else 0
+                        }
+                        viewModel.postSymptom(selectedItems.joinToString(","))
+                    } else {
+                        Toast.makeText(context, "Minimal 3 Gejala", Toast.LENGTH_SHORT).show()
                     }
-                    viewModel.postSymptom(selectedItems.joinToString(","))
                 },
                 modifier = modifier
             )
         }
+
         is Resource.Error -> {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -140,7 +159,7 @@ fun PetDiagnosisContent(
                 .weight(1f)
         ) {
             Text(
-                text = "Beritahu kami gejala yang yang dialami hewan peliharaan anda",
+                text = "Beritahu kami minimal 3 gejala yang yang dialami hewan peliharaan anda",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -174,6 +193,7 @@ fun SymptomList(
     onChange: (List<Symptom>) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
 
     LazyColumn(modifier = modifier) {
         item {

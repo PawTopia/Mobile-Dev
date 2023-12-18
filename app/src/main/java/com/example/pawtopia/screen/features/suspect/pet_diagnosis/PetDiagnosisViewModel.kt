@@ -3,6 +3,7 @@ package com.example.pawtopia.screen.features.suspect.pet_diagnosis
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pawtopia.common.state.Resource
+import com.example.pawtopia.common.util.Event
 import com.example.pawtopia.data.model.PredictResponse
 import com.example.pawtopia.data.model.SymptomResponse
 import com.example.pawtopia.domain.repository.PawtopiaRepository
@@ -22,8 +23,8 @@ class PetDiagnosisViewModel @Inject constructor(
         MutableStateFlow(Resource.None)
     val symptom: StateFlow<Resource<SymptomResponse>> = _symptom
 
-    private val _predict: MutableStateFlow<Resource<PredictResponse>> = MutableStateFlow(Resource.None)
-    val predict: StateFlow<Resource<PredictResponse>> = _predict
+    private val _predict: MutableStateFlow<Event<Resource<PredictResponse>>> = MutableStateFlow(Event(Resource.None))
+    val predict: StateFlow<Event<Resource<PredictResponse>>> = _predict
 
     init {
         getSymptoms()
@@ -42,7 +43,7 @@ class PetDiagnosisViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             pawtopiaRepository.postSymptom(gejala).collect {
-                _predict.value = it
+                _predict.value = Event(it)
             }
         }
     }

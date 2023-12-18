@@ -45,13 +45,13 @@ fun NavGraphBuilder.featuresNavGraph(
                 navArgument("treatment") { type = NavType.StringType },
             )
         ) {
-            val prediction = it.arguments?.getString("prediction") ?: "Hasil Prediksi"
-            val description = it.arguments?.getString("description") ?: "Hasil Deskripsi"
-            val treatment = it.arguments?.getString("treatment") ?: "Hasil Treatment"
+            val prediction = it.arguments?.getString("prediction")
+            val description = it.arguments?.getString("description")
+            val treatment = it.arguments?.getString("treatment")
             SuspectedDiagnosisScreen(
-                prediction = prediction,
-                description = description,
-                treatment = treatment,
+                prediction = prediction ?: "Hasil Prediksi",
+                description = description  ?: "Hasil Deskripsi",
+                treatment = treatment  ?: "Hasil Treatment",
                 navigateToFindClinic = { navController.navigate(FeaturesScreen.FindClinic.route) },
                 navigateToFindDoctor = { navController.navigate(FeaturesScreen.FindDoctor.route) },
                 navigateToHome = { navController.navigate(Graph.MAIN) },

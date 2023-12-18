@@ -96,21 +96,21 @@ fun SuspectedDiagnosisScreen(
                     desc = "Get advice from veterinarians tailored to your pet's health needs.",
                     textButton = "Konsultasi dengan Dokter",
                     cardColor = suggestConsultColor,
-                    onClick = { navigateToFindDoctor },
+                    onClick = { navigateToFindDoctor() },
                     buttonColor = suggestButtonConsultColor,
                 )
                 SuggestCard(
                     desc = "Find the nearest veterinary clinic for prompt medical attention for your pet.",
                     textButton = "Rekomendasi Klinik Hewan",
                     cardColor = suggestRecommendColor,
-                    onClick = { navigateToFindClinic },
+                    onClick = { navigateToFindClinic() },
                     buttonColor = suggestButtonRecommendColor,
                 )
             }
         }
         Text(
             text = "Kembali ke halaman beranda",
-            modifier = Modifier.clickable { navigateToHome },
+            modifier = Modifier.clickable { navigateToHome() },
             color = Color.Red,
             textDecoration = TextDecoration.Underline
         )
