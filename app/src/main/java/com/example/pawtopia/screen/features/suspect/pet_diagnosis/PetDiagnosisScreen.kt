@@ -75,6 +75,61 @@ fun PetDiagnosisScreen(
         else -> {}
     }
 
+    when (val symptomData = symptom) {
+        is Resource.Loading -> {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is Resource.Success -> {
+            var items by remember { mutableStateOf(symptomData.data.data) }
+
+            PetDiagnosisContent(
+                query = query,
+                onQueryChange = { query = it },
+                listSymptom = items,
+                onSymptomChange = { items = it },
+                onSubmitClick = {
+//                    viewModel.postSymptom(listGejala.joinToString(","))
+                    val selectedItems = items.mapIndexed { _, data ->
+                        if (data.isSelected) 1 else 0
+                    }
+                    Log.d("Items", selectedItems.joinToString(","))
+                    Log.d("gejala", listGejala.joinToString(","))
+                }
+            )
+        }
+
+        is Resource.Error -> {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(text = "Error Symptom")
+            }
+        }
+
+        else -> {}
+    }
+
+
+}
+
+@Composable
+fun PetDiagnosisContent(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    listSymptom: List<Symptom>,
+    onSymptomChange: (List<Symptom>) -> Unit,
+    onSubmitClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -88,57 +143,20 @@ fun PetDiagnosisScreen(
                 .weight(1f)
         ) {
             Text(
-                text = "Please tell us which symptom describe your pet’s condition",
+                text = "Beritahu kami gejala yang yang dialami hewan peliharaan anda",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
             )
             CustomSearchBar(
                 query = query,
-                onQueryChange = { query = it },
+                onQueryChange = onQueryChange,
                 placeholderText = "Cari gejala hewan peliharaan anda"
             )
-            when (val symptomData = symptom) {
-                is Resource.Loading -> {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                is Resource.Success -> {
-                    var items by remember { mutableStateOf(symptomData.data.data) }
-
-//                    var items by remember { mutableStateOf(emptyList<Symptom>()) }
-//
-//                    items = resultData.data.data
-                    PetDiagnosisContent(
-                        items = items,
-                        onChange = {
-                            items = it
-                        }
-                    )
-                }
-
-                is Resource.Error -> {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Text(text = "Error Symptom")
-                    }
-                }
-
-                else -> {}
-            }
+            SymptomList(items = listSymptom, onChange = onSymptomChange)
         }
         ElevatedButton(
             onClick = {
-//                navigateToSuspect()
-                viewModel.postSymptom(listGejala.joinToString(","))
+                onSubmitClick()
             },
             modifier = Modifier.fillMaxWidth(0.8f),
             shape = MaterialTheme.shapes.medium,
@@ -156,7 +174,7 @@ fun PetDiagnosisScreen(
 }
 
 @Composable
-fun PetDiagnosisContent(
+fun SymptomList(
     items: List<Symptom>,
     onChange: (List<Symptom>) -> Unit,
     modifier: Modifier = Modifier
