@@ -58,7 +58,7 @@ import com.example.pawtopia.ui.theme.recommendColor
 
 @Composable
 fun HomeScreen(
-    navigateToDoctor: () -> Unit,
+    navigateToFindDoctor: () -> Unit,
     navigateToFindClinic: () -> Unit,
     navigateToSuspect: () -> Unit,
     navigateToDetailClinic: (String, Int) -> Unit,
@@ -100,7 +100,7 @@ fun HomeScreen(
                             title = "Konsultasi dengan Dokter",
                             containerColor = consultColor,
                             imageColor = onConsultColor,
-                            onClick = navigateToDoctor
+                            onClick = navigateToFindDoctor
                         )
                         FeatureButton(
                             image = R.drawable.diagnose_and_treatment,

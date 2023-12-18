@@ -18,7 +18,7 @@ data class Symptom(
 
 data class PredictResponse(
     val prediction: String,
-    val data: List<PredictData>,
+    val data: PredictData,
     val gejala: String,
     val message: String,
 )

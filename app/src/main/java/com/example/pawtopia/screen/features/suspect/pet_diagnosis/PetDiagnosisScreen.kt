@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,7 +42,7 @@ import com.example.pawtopia.data.model.Symptom
 
 @Composable
 fun PetDiagnosisScreen(
-    navigateToSuspect: () -> Unit,
+    navigateToSuspect: (prediction: String, description: String, treatment: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PetDiagnosisViewModel = hiltViewModel(),
 ) {
@@ -51,7 +50,7 @@ fun PetDiagnosisScreen(
     val symptom by viewModel.symptom.collectAsStateWithLifecycle()
     val predict by viewModel.predict.collectAsStateWithLifecycle()
 //    var items by remember { mutableStateOf(emptyList<Symptom>()) }
-    val listGejala = listOf(1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+//    val listGejala = listOf(1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     when (val predictData = predict) {
         is Resource.Loading -> {
@@ -65,7 +64,7 @@ fun PetDiagnosisScreen(
         }
 
         is Resource.Success -> {
-            Log.d("TAG", predictData.data.toString())
+            navigateToSuspect(predictData.data.prediction, predictData.data.data.description, predictData.data.data.treatment)
         }
 
         is Resource.Error -> {
@@ -95,16 +94,14 @@ fun PetDiagnosisScreen(
                 listSymptom = items,
                 onSymptomChange = { items = it },
                 onSubmitClick = {
-//                    viewModel.postSymptom(listGejala.joinToString(","))
                     val selectedItems = items.mapIndexed { _, data ->
                         if (data.isSelected) 1 else 0
                     }
-                    Log.d("Items", selectedItems.joinToString(","))
-                    Log.d("gejala", listGejala.joinToString(","))
-                }
+                    viewModel.postSymptom(selectedItems.joinToString(","))
+                },
+                modifier = modifier
             )
         }
-
         is Resource.Error -> {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -165,8 +162,6 @@ fun PetDiagnosisContent(
                 contentColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
-//            val selectedIndices = items
-//                .mapIndexed { index, data -> if (data.isSelected) 1 else 0 }
             Text(text = "Suspect Penyakit", style = MaterialTheme.typography.headlineSmall)
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -179,6 +174,7 @@ fun SymptomList(
     onChange: (List<Symptom>) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     LazyColumn(modifier = modifier) {
         item {
             Spacer(modifier = Modifier.height(4.dp))
@@ -224,10 +220,4 @@ fun SymptomList(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    PetDiagnosisScreen(navigateToSuspect = {})
 }

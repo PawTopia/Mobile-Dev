@@ -24,7 +24,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.pawtopia.ui.theme.primaryColor
 import com.example.pawtopia.ui.theme.suggestButtonConsultColor
@@ -34,6 +33,12 @@ import com.example.pawtopia.ui.theme.suggestRecommendColor
 
 @Composable
 fun SuspectedDiagnosisScreen(
+    prediction: String,
+    description: String,
+    treatment: String,
+    navigateToFindClinic: () -> Unit,
+    navigateToFindDoctor: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -45,7 +50,7 @@ fun SuspectedDiagnosisScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Tick Fever",
+        Text(text = prediction,
             modifier = Modifier
                 .drawBehind {
                     drawRoundRect(
@@ -61,13 +66,9 @@ fun SuspectedDiagnosisScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
             ) {
-                Text(text = "Description", style = MaterialTheme.typography.titleMedium)
+                Text(text = "Deskripsi", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    text = "An infectious disease with a characteristic rash, often transmitted by the bite of a tick.\n" +
-                            "Rocky Mountain spotted fever is a potentially fatal disease that's usually caused by the bite of a tick infected with rickettsia group bacteria.\n" +
-                            "\n" +
-                            "Symptoms include fever, headache and muscle aches. A rash may be present, frequently with blackened or crusted skin at the site of a tick bite.\n" +
-                            "Spotted fever responds well to prompt treatment with antibiotics."
+                    text = description
                 )
             }
         }
@@ -78,10 +79,9 @@ fun SuspectedDiagnosisScreen(
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
 
             ) {
-                Text(text = "Treatment", style = MaterialTheme.typography.titleMedium)
+                Text(text = "Perawatan", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    text = "Treatment consists of antibiotics\n" +
-                            "Spotted fever responds well to prompt treatment with antibiotics."
+                    text = treatment
                 )
             }
         }
@@ -96,21 +96,21 @@ fun SuspectedDiagnosisScreen(
                     desc = "Get advice from veterinarians tailored to your pet's health needs.",
                     textButton = "Konsultasi dengan Dokter",
                     cardColor = suggestConsultColor,
-                    onClick = {},
+                    onClick = { navigateToFindDoctor },
                     buttonColor = suggestButtonConsultColor,
                 )
                 SuggestCard(
                     desc = "Find the nearest veterinary clinic for prompt medical attention for your pet.",
                     textButton = "Rekomendasi Klinik Hewan",
                     cardColor = suggestRecommendColor,
-                    onClick = {},
+                    onClick = { navigateToFindClinic },
                     buttonColor = suggestButtonRecommendColor,
                 )
             }
         }
         Text(
             text = "Kembali ke halaman beranda",
-            modifier = Modifier.clickable {  },
+            modifier = Modifier.clickable { navigateToHome },
             color = Color.Red,
             textDecoration = TextDecoration.Underline
         )
@@ -150,10 +150,4 @@ fun SuggestCard(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SuspectPreview() {
-    SuspectedDiagnosisScreen()
 }

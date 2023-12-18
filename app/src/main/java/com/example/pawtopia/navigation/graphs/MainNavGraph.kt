@@ -24,7 +24,7 @@ fun MainNavGraph(
     ) {
         composable(route = BottomBarScreen.Home.route) {
             HomeScreen(
-                navigateToDoctor = {
+                navigateToFindDoctor = {
                     navController.navigate(FeaturesScreen.FindDoctor.route)
                 },
                 navigateToFindClinic = {
