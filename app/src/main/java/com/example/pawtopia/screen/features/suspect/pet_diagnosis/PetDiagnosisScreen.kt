@@ -117,6 +117,7 @@ fun PetDiagnosisScreen(
                         Toast.makeText(context, "Minimal 3 Gejala", Toast.LENGTH_SHORT).show()
                     }
                 },
+                enabled = predict.peekContent() != Resource.Loading,
                 modifier = modifier
             )
         }
@@ -144,6 +145,7 @@ fun PetDiagnosisContent(
     listSymptom: List<Symptom>,
     onSymptomChange: (List<Symptom>) -> Unit,
     onSubmitClick: () -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -171,6 +173,7 @@ fun PetDiagnosisContent(
             SymptomList(items = listSymptom, onChange = onSymptomChange)
         }
         ElevatedButton(
+            enabled = enabled,
             onClick = {
                 onSubmitClick()
             },

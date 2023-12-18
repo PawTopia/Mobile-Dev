@@ -49,11 +49,17 @@ fun NavGraphBuilder.featuresNavGraph(
             val description = it.arguments?.getString("description")
             val treatment = it.arguments?.getString("treatment")
             SuspectedDiagnosisScreen(
-                prediction = prediction ?: "Hasil Prediksi",
-                description = description  ?: "Hasil Deskripsi",
-                treatment = treatment  ?: "Hasil Treatment",
-                navigateToFindClinic = { navController.navigate(FeaturesScreen.FindClinic.route) },
-                navigateToFindDoctor = { navController.navigate(FeaturesScreen.FindDoctor.route) },
+                prediction = prediction ?: "",
+                description = description ?: "",
+                treatment = treatment ?: "",
+                navigateToFindClinic = {
+                    navController.popBackStack(BottomBarScreen.Home.route, false)
+                    navController.navigate(FeaturesScreen.FindClinic.route)
+                },
+                navigateToFindDoctor = {
+                    navController.popBackStack(BottomBarScreen.Home.route, false)
+                    navController.navigate(FeaturesScreen.FindDoctor.route)
+                                       },
                 navigateToHome = { navController.navigate(Graph.MAIN) },
             )
             onFeaturesTitleChanged("Suspect Penyakit")
