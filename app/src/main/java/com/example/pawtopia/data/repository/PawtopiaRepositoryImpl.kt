@@ -13,12 +13,13 @@ import com.example.pawtopia.domain.repository.PawtopiaRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import retrofit2.HttpException
 
 class PawtopiaRepositoryImpl(
     private val symptomApi: SymptomApi,
     private val suspectApi: SuspectApi
-): PawtopiaRepository {
+) : PawtopiaRepository {
 
     override suspend fun getSymptoms(): Flow<Resource<SymptomResponse>> = flow {
         emit(Resource.Loading)
@@ -58,6 +59,29 @@ class PawtopiaRepositoryImpl(
 
     override fun clinicById(clinicId: Int): Flow<Clinic> = flow {
         DataDummy.dummyClinic.find { it.id == clinicId }?.let { emit(it) }
+    }
+
+    override val clinic: List<Clinic>
+        get() = DataDummy.dummyClinic
+
+    override fun getAllClinic(): Flow<List<Clinic>> {
+        return flowOf(clinic)
+    }
+
+    override fun searchClinic(query: String): Flow<List<Clinic>> = flow {
+        val filtered = DataDummy.dummyClinic.filter {
+            it.name.contains(
+                query,
+                ignoreCase = true
+            ) || it.desc.contains(
+                query,
+                ignoreCase = true
+            ) || it.address.contains(
+                query,
+                ignoreCase = true
+            )
+        }
+        emit(filtered)
     }
 
 }

@@ -6,7 +6,7 @@
     </style>
 
     <style name="Theme.Pawtopia.SplashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="windowSplashScreenAnimationDuration">600</item>
         <item name="postSplashScreenTheme">@style/Theme.Pawtopia</item>
