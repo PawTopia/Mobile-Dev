@@ -67,13 +67,15 @@ fun NavGraphBuilder.featuresNavGraph(
         composable(
             route = FeaturesScreen.FindDoctor.route,
         ) {
+            LaunchedEffect(true) {
+                onFeaturesTitleChanged("Pilih Dokter Terbaikmu")
+            }
             FindDoctorScreen(
                 navigateToDetailDoctor = {
                     navController.navigate(FeaturesScreen.DetailDoctor.createRoute(it))
+                    onFeaturesTitleChanged("Profil Dokter")
                 },
             )
-            onFeaturesTitleChanged("Pilih Dokter Terbaikmu")
-
         }
         composable(
             route = FeaturesScreen.DetailDoctor.route,
