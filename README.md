@@ -27,3 +27,4 @@ The goals for the app architecture are:
 * DataStore Preferences
 * Dagger Hilt Dependency Injection
 * Retrofit
+* Firebase Auth
