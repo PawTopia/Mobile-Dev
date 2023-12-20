@@ -10,6 +10,15 @@ This is the repository for Pawtopia Mobile Development App for Bangkit Academy H
 
 **Pawtopia** is a Android app to help users understand and treat their pet diseases. This app uses AI to help estimate the disease that the pet is experiencing based on the symptoms reported by the user. This app will also provide veterinarian and recommendations for the nearest pet clinic that users can visit for further treatment.
 
+# Project Information
+* Target Android SDK Version       = 34
+* Min Android SDK Version          = 24
+* Gradle JDK Version               = 17
+* Android Gradle Plugin Version    = 8.1.3
+* Kotlin Version                   = 1.9.20
+* Compose BOM Version              = 2023.10.01
+
+
 # Architecture
 
 The **Pawtopia** app follows the [official architecture guidance](https://developer.android.com/topic/architecture) or what is commonly called Clean Architecture with MVVM Design Pattern
