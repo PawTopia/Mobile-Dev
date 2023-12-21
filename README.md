@@ -18,6 +18,14 @@ This is the repository for Pawtopia Mobile Development App for Bangkit Academy H
 * Kotlin Version                   = 1.9.20
 * Compose BOM Version              = 2023.10.01
 
+# Getting Started
+1. Clone the repository 
+   
+   `git clone https://github.com/PawTopia/Mobile-Dev.git`
+
+   or Download the zip file then Extract the zip file
+3. Open the whole project in Android Studio.
+4. Sync & Run app configuration
 
 # Architecture
 
