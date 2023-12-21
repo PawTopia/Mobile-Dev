@@ -12,7 +12,6 @@ import com.example.pawtopia.navigation.FeaturesScreen
 import com.example.pawtopia.screen.features.chat.ChatScreen
 import com.example.pawtopia.screen.features.clinic.DetailClinicScreen
 import com.example.pawtopia.screen.features.clinic.FindClinicScreen
-import com.example.pawtopia.screen.features.doctor.DetailDoctorScreen
 import com.example.pawtopia.screen.features.doctor.DoctorProfileScreen
 import com.example.pawtopia.screen.features.doctor.FindDoctorScreen
 import com.example.pawtopia.screen.features.suspect.SuspectedDiagnosisScreen
