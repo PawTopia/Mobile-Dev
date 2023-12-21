@@ -1,5 +1,6 @@
 package com.example.pawtopia.screen.features.clinic
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +37,7 @@ fun DetailClinicScreen(
     modifier: Modifier = Modifier,
     viewModel: DetailClinicViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     viewModel.getClinicById(clinicId)
     val result by viewModel.result.collectAsStateWithLifecycle()
 
@@ -80,7 +83,12 @@ fun DetailClinicScreen(
             Text(text = result.desc, textAlign = TextAlign.Justify)
             Spacer(modifier = Modifier.height(12.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    Toast.makeText(
+                    context,
+                    "Fitur Belum diimplementasikan",
+                    Toast.LENGTH_SHORT
+                ).show() },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(text = "Lihat di Google Maps")

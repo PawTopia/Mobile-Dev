@@ -12,7 +12,7 @@ import com.example.pawtopia.navigation.FeaturesScreen
 import com.example.pawtopia.screen.features.chat.ChatScreen
 import com.example.pawtopia.screen.features.clinic.DetailClinicScreen
 import com.example.pawtopia.screen.features.clinic.FindClinicScreen
-import com.example.pawtopia.screen.features.doctor.DetailDoctorScreen
+import com.example.pawtopia.screen.features.doctor.DoctorProfileScreen
 import com.example.pawtopia.screen.features.doctor.FindDoctorScreen
 import com.example.pawtopia.screen.features.suspect.SuspectedDiagnosisScreen
 import com.example.pawtopia.screen.features.suspect.pet_diagnosis.PetDiagnosisScreen
@@ -82,7 +82,15 @@ fun NavGraphBuilder.featuresNavGraph(
             arguments = listOf(navArgument("doctorId") { type = NavType.IntType })
         ) {
             val doctorId = it.arguments?.getInt("doctorId") ?: -1
-            DetailDoctorScreen(
+//            DetailDoctorScreen(
+//                doctorId = doctorId,
+//                navigateToConversation = { title ->
+//                    navController.navigate(FeaturesScreen.Conversation.route)
+//                    onFeaturesTitleChanged(title)
+//                }
+//            )
+
+            DoctorProfileScreen(
                 doctorId = doctorId,
                 navigateToConversation = { title ->
                     navController.navigate(FeaturesScreen.Conversation.route)
