@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,13 +60,13 @@ fun DoctorProfileScreen(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter = painterResource(id = R.drawable.foto_dokter),
-                contentDescription = "Foto Dokter"
+                contentDescription = "Foto Dokter",
+                modifier = Modifier.size(250.dp)
             )
             Box(
                 modifier = Modifier.background(
@@ -73,7 +75,9 @@ fun DoctorProfileScreen(
                 )
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Card(
@@ -86,7 +90,7 @@ fun DoctorProfileScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                                .padding(vertical = 8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Text(
@@ -100,22 +104,23 @@ fun DoctorProfileScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp, horizontal = 20.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                            .padding(vertical = 12.dp, horizontal = 30.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        DoctorStatus()
-                        DoctorStatus()
-                        DoctorStatus()
-                        DoctorStatus()
-                        DoctorStatus()
+                        DoctorStatus(painter = painterResource(id = R.drawable.patients), value = "116+", label = "Patients")
+                        DoctorStatus(painter = painterResource(id = R.drawable.experience), value = "3+", label = "Years")
+                        DoctorStatus(painter = painterResource(id = R.drawable.rating), value = "4.9", label = "Rating")
+                        DoctorStatus(painter = painterResource(id = R.drawable.reviews), value = "90+", label = "Reviews")
                     }
                     Column(
-                        modifier = Modifier.padding(20.dp),
+                        modifier = Modifier
+                            .padding(vertical = 16.dp, horizontal = 20.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(text = "About", fontWeight = FontWeight.Bold, fontSize = 20.sp)
                         Text(text = result.desc)
                     }
+                    Spacer(modifier = Modifier.weight(1f))
                     ElevatedButton(
                         onClick = { navigateToConversation(result.name) },
                         modifier = Modifier.fillMaxWidth(0.7f),
@@ -138,7 +143,7 @@ fun DoctorProfileScreen(
                         modifier = Modifier.fillMaxWidth(0.7f),
                         shape = RoundedCornerShape(25),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.background,
+                            containerColor = Color.White,
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         border = BorderStroke(
@@ -148,6 +153,7 @@ fun DoctorProfileScreen(
                     ) {
                         Text(text = "Reservasi")
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
             }
         }
@@ -157,31 +163,28 @@ fun DoctorProfileScreen(
 
 @Composable
 fun DoctorStatus(
+    painter: Painter,
+    value: String,
+    label: String,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_person),
+            painter = painter,
             contentDescription = null,
             colorFilter = ColorFilter.tint(color = Color.Red)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "116+", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Patients")
+        Text(text = value, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(text = label)
     }
 }
 
 
-@Preview(
-    showBackground = true,
-)
-@Composable
-fun DoctorStatusPreview() {
-    DoctorStatus()
-}
 
 @Preview(showBackground = true)
 @Composable
