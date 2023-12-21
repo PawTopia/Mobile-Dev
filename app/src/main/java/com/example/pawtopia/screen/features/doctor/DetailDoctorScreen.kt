@@ -1,5 +1,7 @@
 package com.example.pawtopia.screen.features.doctor
 
+import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,9 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,9 +28,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,7 +45,7 @@ fun DetailDoctorScreen(
     modifier: Modifier = Modifier,
     viewModel: DetailDoctorViewModel = hiltViewModel()
 ) {
-
+    val context = LocalContext.current
     viewModel.getDoctorById(doctorId)
     val result by viewModel.result.collectAsStateWithLifecycle()
 
@@ -55,8 +59,33 @@ fun DetailDoctorScreen(
             desc = result.desc
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = { navigateToConversation(result.name) }, modifier = Modifier.fillMaxWidth(0.7f)) {
+        ElevatedButton(
+            onClick = { navigateToConversation(result.name) },
+            modifier = Modifier.fillMaxWidth(0.7f),
+            shape = RoundedCornerShape(25),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
+        ) {
             Text(text = "Hubungi dokter")
+        }
+        ElevatedButton(
+            onClick = {
+                Toast.makeText(context, "Fitur Belum diimplementasikan", Toast.LENGTH_SHORT).show()
+            },
+            modifier = Modifier.fillMaxWidth(0.7f),
+            shape = RoundedCornerShape(25),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
+            border = BorderStroke(
+                color = MaterialTheme.colorScheme.primary,
+                width = 2.dp
+            )
+        ) {
+            Text(text = "Reservasi")
         }
     }
 
@@ -105,8 +134,10 @@ fun DoctorProfileCard(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         RatingCard(title = "Rating", value = "4.7", iconCard = {
-                            RatingBar(modifier = Modifier.padding(4.dp),
-                                rating = 3.5)
+                            RatingBar(
+                                modifier = Modifier.padding(4.dp),
+                                rating = 3.5
+                            )
                         })
                         RatingCard(title = "Patients", value = "500+", iconCard = {
                             Icon(painterResource(id = R.drawable.groups), contentDescription = null)
@@ -125,7 +156,8 @@ fun DoctorProfileCard(
 fun DoctorJobname(
     name: String,
     jobTitle: String,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.Start
@@ -144,14 +176,13 @@ fun DoctorJobname(
 fun RatingCard(
     title: String,
     value: String,
-    iconCard:  @Composable () -> Unit,
+    iconCard: @Composable () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .height(60.dp)
-            .width(90.dp)
-        ,
+            .width(90.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         )

@@ -82,13 +82,13 @@ fun NavGraphBuilder.featuresNavGraph(
             arguments = listOf(navArgument("doctorId") { type = NavType.IntType })
         ) {
             val doctorId = it.arguments?.getInt("doctorId") ?: -1
-            DetailDoctorScreen(
-                doctorId = doctorId,
-                navigateToConversation = { title ->
-                    navController.navigate(FeaturesScreen.Conversation.route)
-                    onFeaturesTitleChanged(title)
-                }
-            )
+//            DetailDoctorScreen(
+//                doctorId = doctorId,
+//                navigateToConversation = { title ->
+//                    navController.navigate(FeaturesScreen.Conversation.route)
+//                    onFeaturesTitleChanged(title)
+//                }
+//            )
             LaunchedEffect(true) {
                 onFeaturesTitleChanged("Profil Dokter")
             }
